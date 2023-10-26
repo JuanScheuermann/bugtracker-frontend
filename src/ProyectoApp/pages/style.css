@@ -1,0 +1,18 @@
+
+
+.btn-custom {
+
+    border: 1px solid;
+    padding: 5px 8px;
+    background-color: #6c88b8;
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+.btn-delete{
+    background-color: rgb(206, 52, 52);
+    border: 1px solid;
+    padding: 5px 8px;
+    color: whitesmoke;
+    font-weight: bold;
+}
