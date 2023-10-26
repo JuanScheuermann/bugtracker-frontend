@@ -16,33 +16,36 @@ export const NuevoProyectoPage = () => {
                     >
 
                         <Tab eventKey='info' title='Proyecto'>
-                            <div className='p-2'>
+                            <div>
 
-                                <div className='mb-4'>
-                                    <input type="text"
-                                        className='form-control w-100'
-                                        placeholder='Titulo del proyecto'
-                                    />
-                                </div>
+                                <div
+                                    className='p-4 border mt-2 w-sm-100 shadow'
+                                    style={{ margin: '0 auto' }}
+                                >
+                                    <div className='form-group my-4'>
+                                        <label htmlFor="">Titulo</label>
+                                        <input type="text"
+                                            className='form-control w-100'
+                                        />
+                                    </div>
 
-                                <div>
-                                    <textarea className='w-100 border-1 rounded-1 p-2'
-                                        style={{ height: '80px' }}
-                                        placeholder='Decripcion...'
-                                    />
+                                    <div className='form-group'>
+                                        <label htmlFor="">Descripcion</label>
+                                        <textarea className='w-100 border-1 rounded-1 p-2 form-control'
+                                            style={{ height: '80px' }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </Tab>
                         <Tab eventKey='miembros' title='Miembros'>
-                            <div>
-                                <input type="text" className='w-100 mb-3' />
+                            <div className="input-group mb-3">
+                                <input type="text" className="form-control" placeholder="Correo del usuario" />
+                                <button className="input-group-text shadow-none px-4 btn-warning">
+                                    <i className="bi bi-search"></i>
+                                </button>
                             </div>
-                            <div className='p-2' style={{
-                                height: '414px',
-                                backgroundColor: '#1A202C'
-                            }}>
 
-                            </div>
                         </Tab>
                     </Tabs>
                 </div>

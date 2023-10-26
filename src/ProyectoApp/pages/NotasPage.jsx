@@ -1,13 +1,18 @@
-import React from 'react'
+import { useState } from 'react'
 import { Badge, Dropdown, Image } from 'react-bootstrap'
+import { ComentarioBox } from '../components/ComentarioBox'
+import { ComentarioModal } from '../components/ComentarioModal';
 
 export const NotasPage = () => {
+
+    const [modal, setModal] = useState(false);
+
     return (
         <div className='p-2'>
             <div className='border p-2 shadow rounded'>
                 <h2>Problemas con la BD</h2>
                 <hr />
-                <p style={{ fontSize: '20px', fontWeight: 'bold' }}>
+                <p style={{ fontSize: '20px', fontWeight: '500', fontStyle: 'oblique' }}>
                     No podemos establecer conexion con la base de datos,
                     ya verificamos que el motor de bd este corriendo
                     en segundo plano pero nada.
@@ -48,49 +53,21 @@ export const NotasPage = () => {
                     Comentarios
                 </h2>
 
-                <div className='seccion-comentarios'>
+                <ComentarioBox />
 
-                    <div className='comentario-container d-flex justify-content-start'>
-                        <div className='me-3'>
-                            <Image roundedCircle
-                                style={{
-                                    marginLeft: '6px',
-                                    border: '1px solid black'
-                                }}
-                                width={'50px'}
-                                height={'50px'}
-                                src='https://imgs.search.brave.com/Z8HOujr_Mk4LJgp1ft8Ou-VXGo57bU9NiyUTicIvm24/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzc3LzUxLzgx/LzM2MF9GXzc3NTE4/MTM2X0Y4OEkwdjNS/Mm1ac0tFZ3h4WE1j/NGlxWGxPaks4T0xF/LmpwZw'
-                            />
-                        </div>
-                        <div>
-                            <span>Jose</span>
-                            <p>Fijate en la cadena de conexion</p>
-                        </div>
-                    </div>
-
-                    <div className='comentario-container d-flex justify-content-start'>
-                        <div className='me-3'>
-                            <Image roundedCircle
-                                style={{
-                                    marginLeft: '6px',
-                                    border: '1px solid black'
-                                }}
-                                width={'50px'}
-                                height={'50px'}
-                                src='https://imgs.search.brave.com/Z8HOujr_Mk4LJgp1ft8Ou-VXGo57bU9NiyUTicIvm24/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzc3LzUxLzgx/LzM2MF9GXzc3NTE4/MTM2X0Y4OEkwdjNS/Mm1ac0tFZ3h4WE1j/NGlxWGxPaks4T0xF/LmpwZw'
-                            />
-                        </div>
-                        <div>
-                            <span>Jose</span>
-                            <p>Fijate en la cadena de conexion</p>
-                        </div>
-                    </div>
-
-                    <button className='btn-comentar fs-5 mt-3'>
+                <div
+                    className='border shadow mt-3 p-3'
+                    style={{ width: '95%', margin: '0 auto' }}
+                >
+                    <textarea className='w-100 p-2 rounded'></textarea>
+                    <button className='btn-comentar fs-5 mt-3'
+                        onClick={() => setModal(true)}
+                    >
                         <i className="bi bi-plus me-2"></i>
                         Agregar Comentario
                     </button>
                 </div>
+
             </div>
         </div>
     )
