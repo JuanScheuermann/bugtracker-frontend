@@ -6,9 +6,7 @@ import './app.css'
 export const App = () => {
   return (
     <>
-      <Layout>
-        <AppRouter />
-      </Layout>
+      <AppRouter />
     </>
   )
 }

@@ -1,7 +1,10 @@
 import React from 'react'
 import './proyecto.css'
-import { Badge, Table } from 'react-bootstrap'
+
 import { Link } from 'react-router-dom'
+import { proyectos } from '../../Data/proyectos'
+import { ProyectosTable } from '../components/ProyectosTable'
+
 
 export const ProyectosPage = () => {
     return (
@@ -42,37 +45,7 @@ export const ProyectosPage = () => {
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td><Link to='/proyecto/1'>Proyecto n°2</Link></td>
-                            <td>Este es mi segundo proyecto</td>
-                            <td><Badge bg='warning'>En desarrollo</Badge></td>
-                            <td>11/09/22</td>
-                        </tr>
-                        <tr>
-                            <td>Proyecto n°3</td>
-                            <td>Este es mi tercer proyecto</td>
-                            <td><Badge bg='warning'>En desarrollo</Badge></td>
-                            <td>08/10/22</td>
-                        </tr>
-                        <tr>
-                            <td>Proyecto n°4</td>
-                            <td>Este es mi cuarto proyecto</td>
-                            <td><Badge bg='warning'>En desarrollo</Badge></td>
-                            <td>08/10/22</td>
-                        </tr>
-                        <tr>
-                            <td>Proyecto n°5</td>
-                            <td>Este es mi quinto proyecto</td>
-                            <td><Badge bg='warning'>En desarrollo</Badge></td>
-                            <td>08/10/22</td>
-                        </tr>
-                        <tr>
-                            <td>Proyecto n°6</td>
-                            <td>Este es mi sexto proyecto</td>
-                            <td><Badge bg='warning'>En desarrollo</Badge></td>
-                            <td>08/10/22</td>
-                        </tr>
-
+                        <ProyectosTable proyectos={proyectos} />
                     </tbody>
                 </table>
             </section>

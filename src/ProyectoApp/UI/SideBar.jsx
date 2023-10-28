@@ -4,11 +4,17 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Image from 'react-bootstrap/Image';
 import './styles.css'
 import { Link } from 'react-router-dom';
+import { useAuthStore } from '../../hooks/useAuthStore';
 
 export const SideBar = () => {
 
+    const { user, startLogout } = useAuthStore()
     const [open, setOpen] = useState(false);
     const [openDropHome, setOpenDropHome] = useState(false);
+
+    const cerrarSesion = () => {
+        startLogout();
+    }
 
     const mostrarMenu = () => setOpen(true);
     const cerrarMenu = () => setOpen(false);
@@ -28,7 +34,7 @@ export const SideBar = () => {
 
                 <Nav.Item className='d-flex align-items-center'>
                     <span style={{ color: 'whitesmoke', marginInline: '10px' }}>
-                        juan scheuermann
+                        {user.nombre}
                     </span>
                     <Image roundedCircle
                         style={{ marginLeft: '6px' }}
@@ -61,20 +67,20 @@ export const SideBar = () => {
                             <Collapse in={openDropHome}>
                                 <ul className='nav-collapse ms-1' id='submenu' data-bs-parent="#parentM">
                                     <li className='nav-item text-white'>
-                                        <Link href="#" to='/proyectos' className='nav-link' aria-current="page">
+                                        <Link to='/' className='nav-link' aria-current="page">
                                             Mis Proyectos
                                         </Link>
                                     </li>
 
                                     <li className='nav-item text-white'>
-                                        <a href="#" className='nav-link' aria-current="page">Nuevo proyecto</a>
+                                        <Link to='/proyecto/nuevo' className='nav-link' aria-current="page">Nuevo proyecto</Link>
                                     </li>
                                 </ul>
                             </Collapse>
                         </li>
 
                         <li className='nav-item my-1'>
-                            <a href="#" className='nav-link' onClick={cerrarMenu}>
+                            <a href="#" className='nav-link' onClick={cerrarSesion}>
                                 <i className="bi bi-person-fill text-dark fs-4"></i>
                                 <span className='ms-3 text-dark fs-5'>Cerrar sesion</span>
                             </a>

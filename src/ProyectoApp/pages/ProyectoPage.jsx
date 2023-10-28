@@ -1,22 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import './style.css'
 import {
     Badge, Container,
     Dropdown,
-    DropdownMenu, Modal, ModalBody, ModalHeader
+    DropdownMenu
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useProyectoStore } from '../../hooks/useProyectoStore'
+import { ModalProyecto } from '../components/ModalProyecto'
 
 export const ProyectoPage = () => {
 
     const [mostrar, setMostrar] = useState(false)
+    const { ProyectoActual, Titulo, Descripcion, Autor } = useProyectoStore();
+    const { id } = useParams()
+
+
+    const cerrarModal = () => setMostrar(false);
+    const mostrarModal = () => setMostrar(true);
+
+    useEffect(() => {
+        ProyectoActual(id);
+    }, [])
+
+
     return (
         <div className='p-2'>
 
             <div className='border p-2 shadow rounded'>
-                <h2 className='mb-3'>Proyecto nº1</h2>
+                <h2 className='mb-3'>{Titulo}</h2>
+                <p></p>
                 <h5>Estado: <Badge bg="warning">En Desarrollo</Badge></h5>
-                <h6 className='mb-3'>Creador: Juan Scheuermann</h6>
+                <h6 className='mb-3'>Creador: {Autor}</h6>
                 <h6>Fecha: 10/09/2022</h6>
 
                 <hr />
@@ -38,7 +53,7 @@ export const ProyectoPage = () => {
                                 Nuevo Miembro
                             </Dropdown.Item>
 
-                            <Dropdown.Item>
+                            <Dropdown.Item >
                                 <i className="bi bi-pencil-square me-2"></i>
                                 Editar Proyecto
                             </Dropdown.Item>
