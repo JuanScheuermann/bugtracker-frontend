@@ -28,20 +28,14 @@ export const NuevoProyectoPage = () => {
             <div className='mb-5'>
                 <h2>Proyecto</h2>
             </div>
-
             <section>
                 <form action="">
-
-
                     <div className='mb-3'>
-
                         <Tabs
                             className='mb-3'
                         >
-
                             <Tab eventKey='info' title='Proyecto'>
                                 <div>
-
                                     <div
                                         className='p-4 border mt-2 w-sm-100 shadow'
                                         style={{ margin: '0 auto' }}
@@ -59,6 +53,10 @@ export const NuevoProyectoPage = () => {
                                                 style={{ height: '80px' }}
                                             />
                                         </div>
+
+                                        <div className='form-group'>
+
+                                        </div>
                                     </div>
                                 </div>
                             </Tab>
@@ -69,7 +67,6 @@ export const NuevoProyectoPage = () => {
                                         <i className="bi bi-search"></i>
                                     </button>
                                 </div>
-
                                 <div
                                 >
                                     <div style={{ margin: '0 auto' }}>
@@ -90,7 +87,6 @@ export const NuevoProyectoPage = () => {
                             </Tab>
                         </Tabs>
                     </div>
-
                     <div className='d-flex justify-content-between'>
                         <button className='btn btn-primary'>
                             Crear

@@ -15,10 +15,6 @@ export const ProyectoPage = () => {
     const { ProyectoActual, Titulo, Descripcion, Autor } = useProyectoStore();
     const { id } = useParams()
 
-
-    const cerrarModal = () => setMostrar(false);
-    const mostrarModal = () => setMostrar(true);
-
     useEffect(() => {
         ProyectoActual(id);
     }, [])
@@ -37,49 +33,21 @@ export const ProyectoPage = () => {
                 <hr />
 
                 <div className='d-flex column justify-content-between align-items-center' style={{ width: '45%' }}>
-                    <Dropdown data-bs-theme="dark">
-                        <Dropdown.Toggle variant='dark'>
-                            Acciones
-                        </Dropdown.Toggle>
-
-                        <DropdownMenu>
-                            <Dropdown.Item onClick={() => setMostrar(true)}>
-                                <i className="bi bi-caret-down-fill me-1"></i>
-                                Miembros
-                            </Dropdown.Item>
-
-                            <Dropdown.Item>
-                                <i className="bi bi-person-fill-add me-2"></i>
-                                Nuevo Miembro
-                            </Dropdown.Item>
-
-                            <Dropdown.Item >
-                                <i className="bi bi-pencil-square me-2"></i>
-                                Editar Proyecto
-                            </Dropdown.Item>
-
-                            <Dropdown.Divider />
-                            <Dropdown.Item>
-                                <i className="bi bi-trash3-fill me-2"></i>
-                                Eliminar Proyecto
-                            </Dropdown.Item>
-                        </DropdownMenu>
-                    </Dropdown>
-
+                    <ModalProyecto titulo={Titulo} descripcion={Descripcion} />
                 </div>
             </div>
             <Container fluid className='mt-3'>
-
-                <div className=''>
+                <div>
+                    <button className='btn btn-success'>
+                        <Link to='/proyecto/1/etiqueta_nueva'
+                            style={{ color: 'whitesmoke', textDecoration: 'none' }}>
+                            Nueva etiqueta
+                        </Link>
+                    </button>
+                </div>
+                <div className='my-3'>
                     <div className="input-group mb-3">
-                        <div className="input-group-text p-0">
-                            <select className="form-select form-select-lg shadow-none bg-light border-0">
-                                <option>Prioridad</option>
-                                <option>Alta</option>
-                                <option>Media</option>
-                                <option>Baja</option>
-                            </select>
-                        </div>
+
                         <input type="text" className="form-control" placeholder="Titulo de la etiqueta" />
                         <button className="input-group-text shadow-none px-4 btn-warning">
                             <i className="bi bi-search"></i>
