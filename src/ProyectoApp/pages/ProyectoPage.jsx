@@ -74,7 +74,7 @@ export const ProyectoPage = () => {
                                 <td>Problemas con la bd</td>
                                 <td>Jose</td>
                                 <td><Badge bg='danger'>Alta</Badge></td>
-                                <td><Link to='/proyecto/1/notas'>ver mas</Link></td>
+                                <td><Link to='/proyecto/1/etiquetas/1'>ver mas</Link></td>
                             </tr>
                         </tbody>
                     </table>
