@@ -11,10 +11,10 @@ export const ModalProyecto = ({ titulo, descripcion }) => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                <i className="bi bi-trash3-fill me-2"></i>
+            <button className='btn-custom shadow' onClick={handleShow}>
+                <i className="bi bi-pencil-square me-1"></i>
                 Editar
-            </Button>
+            </button>
 
             <Modal show={show}>
                 <Modal.Header closeButton>

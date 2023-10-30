@@ -5,7 +5,7 @@ export const ComentarioBox = () => {
     return (
         <div className='seccion-comentarios'>
 
-            <div className='comentario-container d-flex justify-content-start border shadow'>
+            <div className='comentario-container d-flex justify-content-start align-items-center border shadow'>
                 <div className='me-3'>
                     <Image roundedCircle
                         style={{

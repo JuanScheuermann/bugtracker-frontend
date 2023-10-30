@@ -1,15 +1,14 @@
-
-
 .btn-custom {
 
-    border: 1px solid;
+    border: 1px solid #553C9A;
     padding: 5px 8px;
-    background-color: #6c88b8;
+    background-color: #553C9A;
     color: whitesmoke;
     font-weight: bold;
+    border-radius: 6px;
 }
 
-.btn-delete{
+.btn-delete {
     background-color: rgb(206, 52, 52);
     border: 1px solid;
     padding: 5px 8px;

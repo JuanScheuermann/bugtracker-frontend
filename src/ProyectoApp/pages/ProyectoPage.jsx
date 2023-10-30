@@ -32,19 +32,23 @@ export const ProyectoPage = () => {
 
                 <hr />
 
-                <div className='d-flex column justify-content-between align-items-center' style={{ width: '45%' }}>
+                <div className='' style={{ width: '45%' }}>
                     <ModalProyecto titulo={Titulo} descripcion={Descripcion} />
+                    <button className='btn-custom mx-2'>
+                        Etiqueta
+                        <i className="bi bi-plus-circle ms-2"></i>
+                    </button>
                 </div>
             </div>
             <Container fluid className='mt-3'>
-                <div>
+                {/* <div>
                     <button className='btn btn-success'>
                         <Link to='/proyecto/1/etiqueta_nueva'
                             style={{ color: 'whitesmoke', textDecoration: 'none' }}>
                             Nueva etiqueta
                         </Link>
                     </button>
-                </div>
+                </div> */}
                 <div className='my-3'>
                     <div className="input-group mb-3">
 
