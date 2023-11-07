@@ -1,16 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import {useParams} from 'react-router-dom'
 import { Badge, Dropdown, Image } from 'react-bootstrap'
 import { ComentarioBox } from '../components/ComentarioBox'
-import { ComentarioModal } from '../components/ComentarioModal';
-
+import { useEtiquetaStore } from '../../hooks/useEtiquetaStore';
 export const NotasPage = () => {
 
     const [modal, setModal] = useState(false);
+    const {eid} = useParams()
+    const {
+        Titulo,
+        Detalles,
+        Fecha,
+        Estado,
+        Prioridad,
+        Comentarios,
+        obtenerEtiqueta
+    } = useEtiquetaStore();
+
+    useEffect(() => {
+        console.log(eid)
+        obtenerEtiqueta(eid)
+    }, [])
+    
 
     return (
         <div className='p-2'>
             <div className='border p-2 shadow rounded'>
-                <h2>Problemas con la BD</h2>
+                <h2>{Titulo}</h2>
                 <hr />
                 <div className='row'>
 
@@ -21,7 +37,7 @@ export const NotasPage = () => {
                             </div>
                             <div className="card-body text-center">
                                 <h3>
-                                    <Badge className='w-100' bg="primary">Abierta</Badge>
+                                    <Badge className='w-100' bg="primary">{Estado}</Badge>
                                 </h3>
                             </div>
                         </div>
@@ -35,7 +51,7 @@ export const NotasPage = () => {
                             </div>
                             <div className="card-body text-center">
                                 <h3>
-                                    <Badge className='w-100' bg="danger">Alta</Badge>
+                                    <Badge className='w-100' bg="danger">{Prioridad}</Badge>
                                 </h3>
 
                             </div>
@@ -48,7 +64,7 @@ export const NotasPage = () => {
                                 <h5>Fecha</h5>
                             </div>
                             <div className="card-body">
-                                <h2>10/09/2022</h2>
+                                <h2>{Fecha}</h2>
                             </div>
                         </div>
                     </div>
@@ -58,9 +74,7 @@ export const NotasPage = () => {
                 <div className='border mt-2 p-2'>
                     <h5>Detalles</h5>
                     <p style={{ fontSize: '20px', fontWeight: '500', fontStyle: 'oblique' }}>
-                        No podemos establecer conexion con la base de datos,
-                        ya verificamos que el motor de bd este corriendo
-                        en segundo plano pero nada.
+                        {Detalles}
                     </p>
                 </div>
                 <hr />
@@ -98,7 +112,7 @@ export const NotasPage = () => {
                     Comentarios
                 </h2>
 
-                <ComentarioBox />
+                <ComentarioBox comentarios={Comentarios}/>
 
                 <div
                     className='border shadow mt-3 p-3'

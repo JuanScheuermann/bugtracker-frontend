@@ -12,7 +12,7 @@ export const ProyectoRoutes = () => {
                     <Route path='/proyecto/:id' element={<ProyectoPage />} />
                     <Route path='/proyecto/nuevo' element={<NuevoProyectoPage />} />
                     <Route path='/' element={<ProyectosPage />} />
-                    <Route path='/proyecto/:id/notas' element={<NotasPage />} />
+                    <Route path='/proyecto/:id/etiquetas/:eid' element={<NotasPage />} />
                     <Route path='/*' element={<Navigate to='/' />} />
                     <Route path='/proyecto/:id/etiqueta_nueva' element={<NuevaEtiquetaPage />} />
                 </Routes>
