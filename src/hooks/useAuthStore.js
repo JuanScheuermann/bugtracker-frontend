@@ -1,23 +1,30 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { onLoging, onLogout, onChecking } from '../store/Auth/authSlice';
+import { proyectoApi } from '../Api/configuracion'
 
 export const useAuthStore = () => {
 
     const { status, user, mensajeError } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
-    const startLogin = ({ email, password }) => {
+    const startLogin = async ({ email, password }) => {
 
-        dispatch(onChecking());
-        if (email == 'test1@test.com' && password == 'test1234') {
-            localStorage.setItem('user', JSON.stringify({ nombre: 'Juan Scheuermann', uid: 'abc123' }))
-            dispatch(onLoging({ nombre: 'J. Scheuermann', uid: 'abc123' }))
-        }
-        else {
-            dispatch(onLogout('Usuario o contraseña incorrecta'));
-        }
+        try {
 
+            const { data } = await proyectoApi.post('auth/login', { email, password });
+            localStorage.setItem('user', JSON.stringify({
+                token: data.token,
+                nombre: data.nombre,
+                uid: data.uid
+            }))
+            console.log(data);
+            dispatch(onLoging({ uid: data.uid, nombre: data.nombre }))
+
+        } catch (err) {
+            console.log(err.response.data?.message)
+            dispatch(onLogout(err.response.data?.message));
+        }
     }
 
     const startRegister = ({ nombre, apellido, email, password }) => {

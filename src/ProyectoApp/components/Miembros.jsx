@@ -1,39 +1,20 @@
 import React from 'react'
 
-export const Miembros = ({ onChangeCheckbox }) => {
+export const Miembros = ({ onChangeCheckbox, usuarios = [] }) => {
     return (
         <>
-            <tr>
-                <td><input type="checkbox"
-                    onChange={onChangeCheckbox}
-                    value='marcozlujan13@gmail.com'
-                />
-                </td>
-                <td>Marcoz Lujan</td>
-                <td>marcozlujan13@gmail.com</td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input type="checkbox"
-                        onChange={onChangeCheckbox}
-                        value='josequi@gmail.com'
-                    />
-                </td>
-                <td>Jose Quiroga</td>
-                <td>josequi@gmail.com</td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input type="checkbox"
-                        onChange={onChangeCheckbox}
-                        value='aguatina14@gmail.com'
-                    />
-                </td>
-                <td>Agustina Candel</td>
-                <td>aguatina14@gmail.com</td>
-            </tr>
+            {
+                usuarios.map(u => (
+                    <tr key={u.id}>
+                        <td>
+                            <input type="checkbox" onChange={onChangeCheckbox}
+                                value={u.id} />
+                        </td>
+                        <td>{u.apiNom}</td>
+                        <td>{u.email}</td>
+                    </tr>
+                ))
+            }
         </>
     )
 }

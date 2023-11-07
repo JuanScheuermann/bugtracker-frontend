@@ -1,12 +1,18 @@
-import React from 'react'
+import { useEffect } from 'react'
 import './proyecto.css'
 
 import { Link } from 'react-router-dom'
-import { proyectos } from '../../Data/proyectos'
 import { ProyectosTable } from '../components/ProyectosTable'
+import { useProyectoStore } from '../../hooks/useProyectoStore'
 
 
 export const ProyectosPage = () => {
+
+    const { obtenerMisProyectos, proyectos } = useProyectoStore();
+    useEffect(() => {
+        obtenerMisProyectos();
+    }, [])
+
     return (
         <div className='p-4'>
 
@@ -40,7 +46,6 @@ export const ProyectosPage = () => {
                             <th>Proyecto</th>
                             <th>Descripcion</th>
                             <th>Estado</th>
-                            <th>Fecha</th>
                         </tr>
                     </thead>
 

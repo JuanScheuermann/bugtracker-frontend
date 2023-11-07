@@ -11,13 +11,21 @@ import { ModalProyecto } from '../components/ModalProyecto'
 
 export const ProyectoPage = () => {
 
-    const [mostrar, setMostrar] = useState(false)
-    const { ProyectoActual, Titulo, Descripcion, Autor } = useProyectoStore();
+    //const [mostrar, setMostrar] = useState(false)
+    const {
+        ProyectoActual,
+        Titulo,
+        Descripcion,
+        Autor,
+        EstadoDesarrollo,
+        editarProyecto
+    } = useProyectoStore();
+
     const { id } = useParams()
 
     useEffect(() => {
         ProyectoActual(id);
-    }, [])
+    }, []);
 
 
     return (
@@ -28,12 +36,16 @@ export const ProyectoPage = () => {
                 <p></p>
                 <h5>Estado: <Badge bg="warning">En Desarrollo</Badge></h5>
                 <h6 className='mb-3'>Creador: {Autor}</h6>
-                <h6>Fecha: 10/09/2022</h6>
 
                 <hr />
 
                 <div className='' style={{ width: '45%' }}>
-                    <ModalProyecto titulo={Titulo} descripcion={Descripcion} />
+                    <ModalProyecto
+                        titulo={Titulo}
+                        descripcion={Descripcion}
+                        estadoDesarrollo={EstadoDesarrollo}
+                        editarP={editarProyecto}
+                    />
                     <button className='btn-custom mx-2'>
                         Etiqueta
                         <i className="bi bi-plus-circle ms-2"></i>

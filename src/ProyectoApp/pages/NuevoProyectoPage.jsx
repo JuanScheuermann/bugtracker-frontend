@@ -1,35 +1,54 @@
-import React, { useState } from 'react'
-import { Container, Tab, Tabs } from 'react-bootstrap'
-import { useProyectoStore } from '../../hooks/useProyectoStore'
+import React, { useEffect, useState } from 'react'
+import { Tab, Tabs } from 'react-bootstrap'
+import {
+    useProyectoStore,
+    useUsuarioService,
+    useForm
+} from '../../hooks'
 import { Miembros } from '../components/Miembros';
+
+const initalState = {
+    titulo: '',
+    descripcion: '',
+}
 
 export const NuevoProyectoPage = () => {
 
-    const { agregarNuevoMiembro } = useProyectoStore();
-    const [checkedUser, setcheckedUser] = useState([]);
+    const { titulo, descripcion, onInputChange } = useForm(initalState)
+    const { obtenerUsuarios, usuarios } = useUsuarioService();
+    const { crearProyecto } = useProyectoStore();
     const [miembros, setMiembros] = useState([]);
 
     const onChangeCheckbox = (event) => {
 
         const { value, checked } = event.target;
         if (checked) {
-            setcheckedUser(pre => [...pre, value])
+            setMiembros(pre => [...pre, { usuarioId: value }])
 
         } else {
-            setcheckedUser(pre => {
-                return [...pre.filter(u => u !== value)]
+            setMiembros(pre => {
+                return [...pre.filter(u => u.UserId !== value)]
             })
         }
 
     }
-    console.log(checkedUser)
+
+    const submitForm = (e) => {
+        e.preventDefault();
+        crearProyecto({ titulo, descripcion, miembros })
+    }
+
+    useEffect(() => {
+        obtenerUsuarios();
+    }, [])
+
     return (
         <div className='p-4'>
             <div className='mb-5'>
                 <h2>Proyecto</h2>
             </div>
             <section>
-                <form action="">
+                <form action="" onSubmit={submitForm}>
                     <div className='mb-3'>
                         <Tabs
                             className='mb-3'
@@ -44,6 +63,9 @@ export const NuevoProyectoPage = () => {
                                             <label >Titulo</label>
                                             <input type="text"
                                                 className='form-control w-100'
+                                                name='titulo'
+                                                value={titulo}
+                                                onChange={onInputChange}
                                             />
                                         </div>
 
@@ -51,11 +73,10 @@ export const NuevoProyectoPage = () => {
                                             <label >Descripcion</label>
                                             <textarea className='w-100 border-1 rounded-1 p-2 form-control'
                                                 style={{ height: '80px' }}
+                                                name='descripcion'
+                                                value={descripcion}
+                                                onChange={onInputChange}
                                             />
-                                        </div>
-
-                                        <div className='form-group'>
-
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +100,7 @@ export const NuevoProyectoPage = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <Miembros onChangeCheckbox={onChangeCheckbox} />
+                                                <Miembros onChangeCheckbox={onChangeCheckbox} usuarios={usuarios} />
                                             </tbody>
                                         </table>
                                     </div>
@@ -88,7 +109,7 @@ export const NuevoProyectoPage = () => {
                         </Tabs>
                     </div>
                     <div className='d-flex justify-content-between'>
-                        <button className='btn btn-primary'>
+                        <button className='btn btn-primary' type='submit'>
                             Crear
                         </button>
 
