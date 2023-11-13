@@ -1,27 +1,51 @@
 import { useState, useEffect } from 'react'
-import {useParams} from 'react-router-dom'
-import { Badge, Dropdown, Image } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { Dropdown } from 'react-bootstrap'
 import { ComentarioBox } from '../components/ComentarioBox'
 import { useEtiquetaStore } from '../../hooks/useEtiquetaStore';
+import { estadoA, prioridad } from '../types/types'
+import { ModalEditarEtiqueta } from '../components/ModalEditarEtiqueta';
+import { ModalCerrarEtiqueta } from '../components/ModalCerrarEtiqueta'
+import { ModalEliminarEtiqueta } from '../components/ModalEliminarEtiqueta'
+import { useComentariosService, useProyectoStore } from '../../hooks';
 export const NotasPage = () => {
 
-    const [modal, setModal] = useState(false);
-    const {eid} = useParams()
+    const { id, eid } = useParams()
     const {
         Titulo,
         Detalles,
-        Fecha,
         Estado,
         Prioridad,
-        Comentarios,
-        obtenerEtiqueta
+        Fecha,
+        MensajeError,
+        AutorId,
+        //Comentarios,
+        obtenerEtiqueta,
+        cerrarEtiqueta,
+        eliminarEtiqueta
     } = useEtiquetaStore();
 
+    const { comentarios, obtenerComentarios, agregarComentario } = useComentariosService()
+
+    const { uid } = JSON.parse(localStorage.getItem('user'));
+    const autorPId = JSON.parse(localStorage.getItem('proyecto'))
+    const miembros = JSON.parse(sessionStorage.getItem('miembros'));
+
+    const miembroId = (uid) => {
+        const au = miembros.find(x => x.usuarioId == uid)
+        return au
+    }
+
     useEffect(() => {
-        console.log(eid)
         obtenerEtiqueta(eid)
     }, [])
-    
+
+    useEffect(() => {
+        obtenerComentarios(eid);
+    }, [comentarios.length])
+
+
+
 
     return (
         <div className='p-2'>
@@ -30,41 +54,44 @@ export const NotasPage = () => {
                 <hr />
                 <div className='row'>
 
-                    <div className='col-lg-4'>
-                        <div className="card card-margin">
-                            <div className="card-header">
-                                <h5>Estado</h5>
+                    <div className='col-lg-4 mb-3'>
+                        <div className="card rounded-0 card-margin bg-primary text-white">
+                            <div className="p-2">
+                                <h3>Estado</h3>
                             </div>
                             <div className="card-body text-center">
-                                <h3>
-                                    <Badge className='w-100' bg="primary">{Estado}</Badge>
+                                <h3 style={{ fontWeight: 'normal' }}>
+                                    {estadoA[Estado]}
+
                                 </h3>
                             </div>
                         </div>
                     </div>
 
-                    <div className='col-lg-4'>
-                        <div className="card card-margin">
-                            <div className="card-header">
-                                <h5>Prioridad</h5>
-
+                    <div className='col-lg-4 mb-3'>
+                        <div className="card rounded-0  card-margin bg-success text-white">
+                            <div className="p-2">
+                                <h3>Prioridad</h3>
                             </div>
                             <div className="card-body text-center">
-                                <h3>
-                                    <Badge className='w-100' bg="danger">{Prioridad}</Badge>
-                                </h3>
+                                <h3 style={{ fontWeight: 'normal' }}>
+                                    {prioridad[Prioridad]}
 
+                                </h3>
                             </div>
                         </div>
                     </div>
 
-                    <div className='col-lg-4'>
-                        <div className="card card-margin">
-                            <div className="card-header">
-                                <h5>Fecha</h5>
+                    <div className='col-lg-4 mb-3'>
+                        <div className="card rounded-0  card-margin bg-danger text-white">
+                            <div className="p-2">
+                                <h3>Fecha</h3>
                             </div>
-                            <div className="card-body">
-                                <h2>{Fecha}</h2>
+                            <div className="card-body text-center">
+                                <h3 style={{ fontWeight: 'normal' }}>
+                                    {Fecha}
+
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -77,32 +104,45 @@ export const NotasPage = () => {
                         {Detalles}
                     </p>
                 </div>
-                <hr />
+
 
 
                 <div className='mt-2'>
-                    <Dropdown>
-                        <Dropdown.Toggle style={{ backgroundColor: '#805AD5', border: 'none' }}>
-                            Acciones
-                        </Dropdown.Toggle>
+                    {
+                        Estado == 1 && (autorPId == uid) &&
 
-                        <Dropdown.Menu>
-                            <Dropdown.Item>
-                                <i className="bi bi-check me-2"></i>
-                                Cerrar Etiqueta
-                            </Dropdown.Item>
+                        <>
+                            <hr />
+                            <ModalEditarEtiqueta
+                                Titulo={Titulo}
+                                eid={eid}
+                                Detalles={Detalles}
+                                Prioridad={Prioridad}
+                            />
 
-                            <Dropdown.Item>
-                                <i className="bi bi-pencil-square me-2"></i>
-                                Editar Etiqueta
-                            </Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item>
-                                <i className="bi bi-trash3-fill me-2"></i>
-                                Eliminar Etiqueta
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                            <ModalCerrarEtiqueta
+                                eId={eid}
+                                mensajeError={MensajeError}
+                                cerrarE={cerrarEtiqueta}
+                            />
+
+                            <ModalEliminarEtiqueta
+                                eId={eid}
+                                eliminarE={eliminarEtiqueta}
+                                mensajeError={MensajeError}
+                                pId={id}
+                            />
+                        </>
+
+                        /* : <ModalEliminarEtiqueta
+                            eId={eid}
+                            eliminarE={eliminarEtiqueta}
+                            mensajeError={MensajeError}
+                            pId={id}
+                        /> */
+
+                    }
+
                 </div>
             </div>
 
@@ -112,20 +152,17 @@ export const NotasPage = () => {
                     Comentarios
                 </h2>
 
-                <ComentarioBox comentarios={Comentarios}/>
+                <ComentarioBox
+                    comentarios={comentarios}
+                    Estado={Estado}
+                    agregarC={agregarComentario}
+                    Miembro={miembroId(uid)}
+                    eid={eid}
+                />
+                {/* <div className='text-center mt-4'>
+                    <h4 style={{ color: 'gray' }}>No hay comentarios</h4>
+                </div> */}
 
-                <div
-                    className='border shadow mt-3 p-3'
-                    style={{ width: '95%', margin: '0 auto' }}
-                >
-                    <textarea className='w-100 p-2 rounded'></textarea>
-                    <button className='btn-comentar fs-5 mt-3'
-                        onClick={() => setModal(true)}
-                    >
-                        <i className="bi bi-plus me-2"></i>
-                        Agregar Comentario
-                    </button>
-                </div>
 
             </div>
         </div>

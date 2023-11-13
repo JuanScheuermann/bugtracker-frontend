@@ -1,17 +1,25 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './proyecto.css'
 
 import { Link } from 'react-router-dom'
 import { ProyectosTable } from '../components/ProyectosTable'
-import { useProyectoStore } from '../../hooks/useProyectoStore'
+import { useProyectoStore, useAuthStore } from '../../hooks'
+import { useForm } from 'react-hook-form'
+
 
 
 export const ProyectosPage = () => {
 
     const { obtenerMisProyectos, proyectos } = useProyectoStore();
+    const { register, handleSubmit } = useForm()
+
     useEffect(() => {
         obtenerMisProyectos();
-    }, [])
+    }, [proyectos.length])
+
+    const submit = () => {
+        obtenerMisProyectos();
+    }
 
     return (
         <div className='p-4'>
@@ -32,12 +40,14 @@ export const ProyectosPage = () => {
                 </div>
             </section>
             <div className=''>
-                <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder="Titulo de la etiqueta" />
-                    <button className="input-group-text shadow-none px-4 btn-warning">
-                        <i className="bi bi-search"></i>
-                    </button>
-                </div>
+                <form action="">
+                    <div className="input-group mb-3">
+                        <input type="text" name='search' className="form-control" placeholder="Titulo de la etiqueta" />
+                        <button className="input-group-text shadow-none px-4 btn-warning">
+                            <i className="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
             <section>
                 <table>

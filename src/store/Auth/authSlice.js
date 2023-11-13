@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-
+const userL = JSON.parse(localStorage.getItem('user'));
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -12,17 +12,15 @@ export const authSlice = createSlice({
     reducers: {
         onChecking: (state) => {
             state.status = 'verificando',
-                state.user = {},
+                state.user = userL,
                 state.mensajeError = undefined
         },
-
         onLoging: (state, { payload }) => {
 
             state.status = 'autenticado',
                 state.user = payload,
                 state.mensajeError = undefined
         },
-
         onLogout: (state, { payload }) => {
             state.status = 'no-autenticado',
                 state.user = {},

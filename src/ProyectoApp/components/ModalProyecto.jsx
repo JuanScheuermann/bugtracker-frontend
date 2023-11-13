@@ -1,37 +1,44 @@
 import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
+import { useForm } from 'react-hook-form'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Form } from 'react-bootstrap';
-import { useForm } from '../../hooks/useForm';
 import { useProyectoStore } from '../../hooks/useProyectoStore';
+import Swal from 'sweetalert2';
 
-export const ModalProyecto = (editarP) => {
+export const ModalProyecto = ({ editarP }) => {
 
-    const { Titulo, Descripcion, EstadoDesarrollo } = useProyectoStore()
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { Titulo, Descripcion, EstadoDesarrollo, AutorId, MensajeError } = useProyectoStore()
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
 
-    const { Titulo: TituloForm, Descripcion: DescripcionForm, EstadoDesarrollo: EstadoDesForm, onInputChange } = useForm({
-        Titulo,
-        Descripcion,
-        EstadoDesarrollo
-    });
+
 
     const handleClose = () => setShow(false);
 
     const handleShow = () => setShow(true);
 
-    const formSubmit = (event) => {
+    const formSubmit = (data) => {
 
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
+        console.log(data)
+
+        /*handleClose();*/
+        editarP({
+            titulo: data.TituloForm,
+            descripcion: data.DescripcionForm,
+            estadoDesarrollo: data.EstadoDesForm,
+            autorId: AutorId
+        });
+
+        if (MensajeError !== undefined) {
+            Swal.fire('Error', MensajeError, 'error');
+            return;
         }
 
-        setValidated(true)
-        editarP();
+        handleClose();
+
     }
 
     return (
@@ -41,70 +48,60 @@ export const ModalProyecto = (editarP) => {
                 Editar
             </button>
 
-            <Modal show={show}>
-                <Modal.Header>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
                     <Modal.Title>Editar Proyecto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Tabs>
-                        <Tab title='Detalles' eventKey='detalles'>
-                            <Form validated={validated} noValidate autoComplete='off' onSubmit={formSubmit}>
+                    <Form autoComplete='off' onSubmit={handleSubmit(formSubmit)}>
 
-                                <Form.Group>
-                                    <label className="mb-2 text-muted">Titulo</label>
-                                    <input
-                                        type="text"
-                                        className='form-control'
-                                        name='TituloForm'
-                                        value={TituloForm}
-                                        onChange={onInputChange}
-                                        required
-                                    />
-                                </Form.Group>
+                        <Form.Group>
+                            <label className="mb-2 text-muted">Titulo</label>
+                            <input
+                                id='TituloForm'
+                                type="text"
+                                className='form-control'
+                                name='TituloForm'
+                                defaultValue={Titulo}
+                                {...register("TituloForm", { required: true })}
+                            />
+                            {errors.TituloForm && <span className='text-danger'>Titulo es obligatorio</span>}
+                        </Form.Group>
 
-                                <Form.Group>
-                                    <label className="mb-2 text-muted">Descripcion</label>
-                                    <input
-                                        type="text"
-                                        className='form-control'
-                                        name='DescripcionForm'
-                                        value={DescripcionForm}
-                                        onChange={onInputChange}
-                                    />
-                                </Form.Group>
+                        <Form.Group>
+                            <label className="mb-2 text-muted">Descripcion</label>
+                            <input
+                                type="text"
+                                className='form-control'
+                                name='DescripcionForm'
+                                defaultValue={Descripcion}
+                                {...register("DescripcionForm")}
+                            />
+                        </Form.Group>
 
-                                <Form.Group>
-                                    <label className="mb-2 text-muted">Estado</label>
+                        <Form.Group>
+                            <label className="mb-2 text-muted">Estado</label>
 
-                                    <select className='form-control' name="EstadoDesForm" value={EstadoDesForm} onChange={onInputChange} required>
-                                        <option value={0}>En desarrollo</option>
-                                        <option value={1}>Completado</option>
-                                        <option value={2}>Abandonado</option>
-                                    </select>
+                            <select {...register("EstadoDesForm")} className='form-control' name="EstadoDesForm">
+                                <option value={0}>En desarrollo</option>
+                                <option value={1}>Completado</option>
+                                <option value={2}>Abandonado</option>
+                            </select>
 
-                                </Form.Group>
-                            </Form>
-                        </Tab>
-                        <Tab title='Miembros' eventKey='miembros'>
-                            <div className='border mt-1 p-3 d-flex justify-content-between align-items-center'>
-                                <span>Marcos</span>
-                                <button className='btn'>x</button>
-                            </div>
-                            <div className='border mt-1 p-3 d-flex justify-content-between align-items-center'>
-                                <span>Jose</span>
-                                <button className='btn'>x</button>
-                            </div>
-                        </Tab>
-                    </Tabs>
+                        </Form.Group>
+
+                        <Form.Group className='mt-3'>
+                            <Button variant="primary" type='submit'>
+                                Guardar
+                            </Button>
+                        </Form.Group>
+                    </Form>
                 </Modal.Body>
-                <Modal.Footer>
+                {/* <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Guardar
-                    </Button>
-                </Modal.Footer>
+                </Modal.Footer> */}
             </Modal>
         </>
     );

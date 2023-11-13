@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../hooks/useAuthStore'
-import { useForm } from '../../hooks/useForm';
+import { useForm } from 'react-hook-form'
 import { AuthLayout } from '../layout/AuthLayout';
+import { Alert } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const formData = {
   email: '',
@@ -11,14 +14,20 @@ const formData = {
 export const LoginPage = () => {
 
   const { mensajeError, startLogin } = useAuthStore();
+  const { register, formState: { errors }, handleSubmit } = useForm(formData);
+  const [show, setShow] = useState(true);
 
-  const { email, password, onInputChange, formState } = useForm(formData);
-
-  const onLoginSubmit = (e) => {
+  const onLoginSubmit = (data, e) => {
     e.preventDefault();
-    startLogin({ email, password });
-
+    startLogin({ email: data.email, password: data.password });
   }
+
+  useEffect(() => {
+    if (mensajeError !== undefined) {
+      Swal.fire('Error', mensajeError, 'error')
+    }
+  }, [mensajeError])
+
 
   return (
     <AuthLayout>
@@ -28,19 +37,18 @@ export const LoginPage = () => {
           <div className="card shadow-lg rounded-0 animate__animated animate__fadeInLeft">
             <div className="card-body p-5">
               <h1 className='fs-4 card-title fw-bold mb-4'>Login</h1>
-              <form action="" className='needs-validation' autoComplete='off' onSubmit={onLoginSubmit}>
+              <form action="" className='needs-validation' autoComplete='off' onSubmit={handleSubmit(onLoginSubmit)}>
 
                 <div className="mb-3">
                   <label className="mb-2 text-muted">E-Mail</label>
                   <input
                     id="email"
                     type="email"
-                    value={email}
                     className="form-control"
                     name="email"
-                    onChange={onInputChange}
-                    required />
-
+                    {...register("email", { required: true })}
+                  />
+                  {errors.email && <span className='text-danger'>Email obligatoria</span>}
                 </div>
 
                 <div className="mb-3">
@@ -50,9 +58,9 @@ export const LoginPage = () => {
                     type="password"
                     className="form-control"
                     name="password"
-                    value={password}
-                    onChange={onInputChange}
-                    required />
+                    {...register("password", { required: true })}
+                  />
+                  {errors.password && <span className='text-danger'>Contraseña obligatoria</span>}
 
                 </div>
 

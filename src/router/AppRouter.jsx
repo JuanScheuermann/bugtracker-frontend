@@ -7,10 +7,18 @@ import { useAuthStore } from '../hooks/useAuthStore'
 
 export const AppRouter = () => {
 
-    const { revisarTokenAuth, status } = useAuthStore();
+    const { revisarTokenAuth, status, setLocalUser, startLogout } = useAuthStore();
 
+    const getUser = () => {
+        let user = JSON.parse(localStorage.getItem('user'))
+        if (user != null) {
+            setLocalUser({ nombre: user.nombre, uid: user.uid });
+        } else {
+            startLogout();
+        }
+    }
     useEffect(() => {
-        revisarTokenAuth();
+        getUser();
     }, []);
 
     if (status === 'verificando') {
@@ -21,7 +29,7 @@ export const AppRouter = () => {
         <>
             <Routes>
                 {
-                    (status === 'autenticado')
+                    (status == 'autenticado')
                         ? <Route path='/*' element={<ProyectoRoutes />} />
                         : <Route path='/auth/*' element={<AuthRoutes />} />
                 }

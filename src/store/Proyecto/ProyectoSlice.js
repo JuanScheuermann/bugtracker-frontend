@@ -38,11 +38,28 @@ export const proyectoSlice = createSlice({
             state.EstadoDesarrollo = payload.EstadoDesarrollo
             state.MensajeError = undefined
         },
+
         AgregarMiembro: (state, { payload }) => {
             state.Miembros = [...payload]
         },
+
+        CrearMensajeError: (state, { payload }) => {
+            state.MensajeError = payload
+        },
+
+        LimpiarMensajeError: (state, { payload }) => {
+            state.MensajeError = undefined
+        }
     }
 });
 
 
-export const { AgregarMiembro, CrearNuevoProyecto, ObtenerProyectoActual } = proyectoSlice.actions;
+export const {
+    AgregarMiembro,
+    CrearNuevoProyecto,
+    CrearMensajeError,
+    LimpiarMensajeError,
+    ObtenerProyectoActual,
+    ObtenerProyectos,
+    Modificarproyecto
+} = proyectoSlice.actions;

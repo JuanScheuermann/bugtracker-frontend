@@ -1,8 +1,10 @@
-import { useState } from 'react'
-import { Form } from 'react-bootstrap';
+import { useEffect, useState } from 'react'
+import { Form, Alert } from 'react-bootstrap';
+import { useForm } from 'react-hook-form'
 import { AuthLayout } from '../layout/AuthLayout';
-import { useForm } from '../../hooks/useForm';
 import { useAuthStore } from '../../hooks/useAuthStore';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 const formData = {
@@ -14,67 +16,59 @@ const formData = {
 export const RegistrarPage = () => {
 
   const { mensajeError, startRegister } = useAuthStore()
-  const [validated, setValidated] = useState(false);
-  const {
-    email,
-    password,
-    nombre,
-    apellido,
-    onInputChange
-  } = useForm(formData);
+  const [show, setShow] = useState(true);
+  const { register, formState: { errors }, handleSubmit } = useForm(formData);
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    setValidated(true);
+  const formSubmit = (data, e) => {
+    e.preventDefault();
     startRegister({
-      nombre,
-      apellido,
-      email,
-      password
+      nombre: data.nombre,
+      apellido: data.apellido,
+      email: data.email,
+      password: data.password
     });
   };
 
+  useEffect(() => {
+    if (mensajeError !== undefined) {
+      Swal.fire('Error', mensajeError, 'error')
+    }
+  }, [mensajeError])
+
+
   return (
     <AuthLayout>
+
       <div className='row justify-content-center h-100 w-100 p-5'>
         <div className='col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9'>
           <div className="card shadow-lg rounded-0 animate__animated animate__fadeInLeft">
             <div className="card-body p-5">
               <h1 className='fs-4 card-title fw-bold mb-4'>Registrarse</h1>
-              <Form validated={validated} onSubmit={handleSubmit} noValidate autoComplete='off'>
+              <Form onSubmit={handleSubmit(formSubmit)} autoComplete='off'>
 
-                <Form.Group className="mb-3">
+                <div className="mb-3 form-group">
                   <label className="mb-2 text-muted">Nombre</label>
                   <input
                     id="nombre"
                     type="text"
                     className="form-control"
                     name="nombre"
-                    value={nombre}
-                    onChange={onInputChange}
-                    required
+                    {...register("nombre", { required: true })}
                   />
-                  <Form.Control.Feedback type='invalid'>El nombre es obligatorio</Form.Control.Feedback>
-                </Form.Group>
+                  {errors.nombre && <span className='text-danger'>Nombre obligatorio</span>}
+                </div>
 
-                <Form.Group className="mb-3">
+                <div className="mb-3">
                   <label className="mb-2 text-muted">Apellido</label>
                   <input
                     id="apellido"
                     type="text"
                     className="form-control"
                     name="apellido"
-                    value={apellido}
-                    onChange={onInputChange}
-                    required />
-                  <Form.Control.Feedback type='invalid'>El apellido obligatorio</Form.Control.Feedback>
-
-                </Form.Group>
+                    {...register("apellido", { required: true })}
+                  />
+                  {errors.apellido && <span className='text-danger'>Apellido obligatorio</span>}
+                </div>
 
                 <div className="mb-3">
                   <label className="mb-2 text-muted">E-Mail</label>
@@ -82,11 +76,10 @@ export const RegistrarPage = () => {
                     id="email"
                     type="email"
                     className="form-control"
-                    value={email}
-                    onChange={onInputChange}
                     name="email"
-                    required />
-                  <Form.Control.Feedback type='invalid'>El Correo es obligatorio</Form.Control.Feedback>
+                    {...register("email", { required: true })}
+                  />
+                  {errors.email && <span className='text-danger'>Email obligatorio</span>}
                 </div>
 
                 <div className="mb-3">
@@ -95,11 +88,10 @@ export const RegistrarPage = () => {
                     id="password"
                     type="password"
                     className="form-control"
-                    value={password}
-                    onChange={onInputChange}
                     name="password"
-                    required />
-                  <Form.Control.Feedback type='invalid'>La contraseña debe tener minimo 6 caracteres</Form.Control.Feedback>
+                    {...register("password", { required: true })}
+                  />
+                  {errors.password && <span className='text-danger'>Contraseña obligatorio</span>}
                 </div>
 
                 <div className="d-flex align-items-center">
@@ -109,7 +101,7 @@ export const RegistrarPage = () => {
                 </div>
 
                 <div className='mt-2'>
-                  <span>Ya tienes una cuenta ? <a href="">Click aqui</a></span>
+                  <span>Ya tienes una cuenta ? <Link to={'/auth/login'}>Click aqui</Link></span>
                 </div>
 
               </Form>

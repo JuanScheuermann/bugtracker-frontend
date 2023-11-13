@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Tab, Tabs } from 'react-bootstrap'
+import { Tab, Tabs, Form } from 'react-bootstrap'
 import {
     useProyectoStore,
-    useUsuarioService,
-    useForm
+    useUsuarioService
 } from '../../hooks'
+import { useForm } from 'react-hook-form'
 import { Miembros } from '../components/Miembros';
+import { Link, useNavigate } from 'react-router-dom';
 
 const initalState = {
     titulo: '',
@@ -14,10 +15,13 @@ const initalState = {
 
 export const NuevoProyectoPage = () => {
 
-    const { titulo, descripcion, onInputChange } = useForm(initalState)
+    const { handleSubmit, register, formState: { errors } } = useForm()
     const { obtenerUsuarios, usuarios } = useUsuarioService();
     const { crearProyecto } = useProyectoStore();
     const [miembros, setMiembros] = useState([]);
+    const [validated, setValidated] = useState(false);
+    const navigate = useNavigate();
+
 
     const onChangeCheckbox = (event) => {
 
@@ -33,9 +37,10 @@ export const NuevoProyectoPage = () => {
 
     }
 
-    const submitForm = (e) => {
-        e.preventDefault();
-        crearProyecto({ titulo, descripcion, miembros })
+    const submitForm = (data) => {
+
+        crearProyecto({ titulo: data.titulo, descripcion: data.descripcion, miembros })
+        navigate('/proyectos', { replace: true });
     }
 
     useEffect(() => {
@@ -48,7 +53,7 @@ export const NuevoProyectoPage = () => {
                 <h2>Proyecto</h2>
             </div>
             <section>
-                <form action="" onSubmit={submitForm}>
+                <Form onSubmit={handleSubmit(submitForm)} noValidate autoComplete='off'>
                     <div className='mb-3'>
                         <Tabs
                             className='mb-3'
@@ -59,25 +64,26 @@ export const NuevoProyectoPage = () => {
                                         className='p-4 border mt-2 w-sm-100 shadow'
                                         style={{ margin: '0 auto' }}
                                     >
-                                        <div className='form-group my-4'>
+                                        <div className='my-4'>
                                             <label >Titulo</label>
                                             <input type="text"
+                                                id='titulo'
                                                 className='form-control w-100'
                                                 name='titulo'
-                                                value={titulo}
-                                                onChange={onInputChange}
+                                                {...register("titulo", { required: true })}
                                             />
+                                            {errors.titulo && <span>El titulo es obligatorio</span>}
                                         </div>
 
-                                        <div className='form-group'>
+                                        <Form.Group className='form-group'>
                                             <label >Descripcion</label>
                                             <textarea className='w-100 border-1 rounded-1 p-2 form-control'
                                                 style={{ height: '80px' }}
                                                 name='descripcion'
-                                                value={descripcion}
-                                                onChange={onInputChange}
+                                                {...register("descripcion")}
+
                                             />
-                                        </div>
+                                        </Form.Group>
                                     </div>
                                 </div>
                             </Tab>
@@ -88,8 +94,7 @@ export const NuevoProyectoPage = () => {
                                         <i className="bi bi-search"></i>
                                     </button>
                                 </div>
-                                <div
-                                >
+                                <div>
                                     <div style={{ margin: '0 auto' }}>
                                         <table className='text-center'>
                                             <thead>
@@ -113,11 +118,11 @@ export const NuevoProyectoPage = () => {
                             Crear
                         </button>
 
-                        <button className='btn btn-danger'>
-                            Cancelar
+                        <button className='btn btn-danger' type='button'>
+                            <Link className='nav-link text-white' to='/proyectos'>Cancela</Link>
                         </button>
                     </div>
-                </form>
+                </Form>
             </section>
         </div>
     )

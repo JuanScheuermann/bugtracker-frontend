@@ -36,12 +36,12 @@ export const SideBar = () => {
                     <span style={{ color: 'whitesmoke', marginInline: '10px' }}>
                         {user.nombre}
                     </span>
-                    <Image roundedCircle
+                    {/*  <Image roundedCircle
                         style={{ marginLeft: '6px' }}
                         width={'50px'}
                         height={'50px'}
                         src='https://imgs.search.brave.com/Z8HOujr_Mk4LJgp1ft8Ou-VXGo57bU9NiyUTicIvm24/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzc3LzUxLzgx/LzM2MF9GXzc3NTE4/MTM2X0Y4OEkwdjNS/Mm1ac0tFZ3h4WE1j/NGlxWGxPaks4T0xF/LmpwZw'
-                    />
+                    /> */}
                 </Nav.Item>
 
             </Nav>
@@ -69,6 +69,12 @@ export const SideBar = () => {
                                     <li className='nav-item text-white'>
                                         <Link to='/' className='nav-link' aria-current="page">
                                             Mis Proyectos
+                                        </Link>
+                                    </li>
+
+                                    <li className='nav-item text-white'>
+                                        <Link to='/proyectos/participacion' className='nav-link' aria-current="page">
+                                            Soy Miembro
                                         </Link>
                                     </li>
 

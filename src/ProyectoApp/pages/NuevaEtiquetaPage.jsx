@@ -1,10 +1,31 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useEtiquetaStore } from '../../hooks/useEtiquetaStore';
 
 export const NuevaEtiquetaPage = () => {
+
+    const { id } = useParams();
+    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { crearEtiqueta } = useEtiquetaStore();
+    const navigate = useNavigate();
+
+    const submitForm = (data, e) => {
+        e.preventDefault();
+        console.log(data.prioridad);
+        crearEtiqueta({
+            titulo: data.titulo,
+            detalles: data.detalles,
+            prioridad: data.prioridad,
+            pid: id
+        });
+
+        navigate(`/proyecto/${id}`);
+    }
+
     return (
         <div className='p-5 w-100'>
-            <form action="" className='border shadow p-4 w-md-50 w-sm-100 '
+            <form action="" onSubmit={handleSubmit(submitForm)} className='border shadow p-4 w-md-50 w-sm-100 '
                 style={{ margin: '0 auto' }}
             >
 
@@ -15,34 +36,44 @@ export const NuevaEtiquetaPage = () => {
 
                 <div className='form-group mb-3'>
                     <label>Titulo</label>
-                    <input type="text" required className='form-control' />
+                    <input type="text"
+                        name='titulo'
+                        className='form-control'
+                        {...register("titulo", { required: true })}
+                    />
+                    {errors.titulo && <span className='text-danger'>El titulo es obligatorio</span>}
                 </div>
 
                 <div className='form-group mb-3'>
                     <label>Detalles</label>
-                    <textarea className='form-control' rows={5}>
-
+                    <textarea
+                        className='form-control'
+                        name='detalles'
+                        rows={5}
+                        {...register("detalles", { required: true })}
+                    >
                     </textarea>
+                    {errors.detalles && <span className='text-danger'>Debe administrar detalles de la etiqueta</span>}
                 </div>
 
                 <div className='form-group mb-3'>
                     <label>Prioridad</label>
-                    <select className='form-control'>
-                        <option>Baja</option>
-                        <option>Media</option>
-                        <option>Alta</option>
+                    <select
+                        className='form-control'
+                        name='prioridad'
+                        {...register("prioridad", { required: true })}
+
+                    >
+                        <option value={1}>Baja</option>
+                        <option value={2}>Media</option>
+                        <option value={3}>Alta</option>
                     </select>
+                    {errors.prioridad && <span className='text-danger'>Debe sellicionar una prioridad</span>}
                 </div>
 
 
                 <button type='submit' className='btn btn-dark px-3'>
-                    <Link style={{
-                        textDecoration: 'none',
-                        color: 'whitesmoke',
-
-                    }}>
-                        Crear Etiqeta
-                    </Link>
+                    Crear Etiqeta
                 </button>
             </form>
         </div>

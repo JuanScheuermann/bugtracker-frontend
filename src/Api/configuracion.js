@@ -6,13 +6,12 @@ export const proyectoApi = axios.create({
     baseURL: url
 });
 
-const { token } = JSON.parse(localStorage.getItem('user'))
+
 
 proyectoApi.interceptors.request.use(config => {
     config.headers = {
         ...config.headers,
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
-
     return config;
 })
