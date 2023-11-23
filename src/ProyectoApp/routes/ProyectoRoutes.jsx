@@ -1,6 +1,16 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { NuevoProyectoPage, ProyectosPage, ProyectoPage, NotasPage, NuevaEtiquetaPage, ProyectosParticipacion, AgregarMiembro } from '../pages'
+import {
+    NuevoProyectoPage,
+    ProyectosPage,
+    ProyectoPage,
+    NotasPage,
+    NuevaEtiquetaPage,
+    ProyectosParticipacion,
+    AgregarMiembro,
+    PerfilPage,
+    AdminUsuariosPage
+} from '../pages'
 import { SideBar } from '../UI/SideBar'
 import { Layout } from '../UI/Layout'
 
@@ -17,6 +27,9 @@ export const ProyectoRoutes = () => {
                     <Route path='/*' element={<Navigate to='/proyectos' />} />
                     <Route path='/proyecto/:id/etiqueta_nueva' element={<NuevaEtiquetaPage />} />
                     <Route path='/proyecto/:id/agregar_miembro' element={<AgregarMiembro />} />
+                    <Route path='/perfil' element={<PerfilPage />} />
+                    <Route path='/admin/usuarios' element={<AdminUsuariosPage />} />
+
                 </Routes>
             </Layout>
         </>

@@ -1,63 +1,116 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useUsuarioService } from '../../hooks/useUsuarioService'
+import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 export const PerfilPage = () => {
 
-    const { } = useUsuarioService();
+    const { obtenerUsuario, usuarioActual, modUsuario, mensajeError } = useUsuarioService();
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const [enable, setEnable] = useState(true);
+    const { register, handleSubmit, formState: { errors } } = useForm({
+
+    });
+
+    const guardarCambio = (data, e) => {
+        e.preventDefault();
+
+        modUsuario({
+            uid: user.uid,
+            email: data.email,
+            nombre: data.nombre,
+            apellido: data.apellido
+        });
+        console.log(usuarioActual)
+        setEnable(true)
+    }
+
+    useEffect(() => {
+        obtenerUsuario(user.uid);
+    }, [])
+
     useEffect(() => {
 
-    }, [])
+        if (mensajeError !== undefined) {
+            Swal.fire('Error', mensajeError, 'error');
+        }
+    }, [mensajeError])
+
 
     return (
         <div className='w-75' style={{ margin: '30px auto' }}>
 
+            {
+                enable == true &&
+                <div className='btn btn-primary mb-1' onClick={() => setEnable(false)}>
+                    Editar
+                </div>
+            }
+
             <div>
-                <form action="" className='border'>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Email</label>
-                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                <form action="" className='border shadow p-4' onSubmit={handleSubmit(guardarCambio)}>
+                    <div>
+                        <h2>Mis datos</h2>
+                    </div>
+                    <div className="">
+                        <div className="form-group mb-2">
+                            <label>Nombre</label>
+                            <input type="text"
+                                className="form-control"
+                                name='nombre'
+                                defaultValue={usuarioActual.nombre}
+                                disabled={enable}
+                                {...register("nombre", { required: true })}
+                            />
+                            {errors.nombre && <span className='text-danger'>El nombre es obligatorio</span>}
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">Password</label>
-                            <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                        <div className="form-group mb-2">
+                            <label>Apellido</label>
+                            <input type="text"
+                                className="form-control"
+                                name='apellido'
+                                defaultValue={usuarioActual.apellido}
+                                disabled={enable}
+                                {...register("apellido", { required: true })}
+                            />
+                            {errors.nombre && <span className='text-danger'>El apellido es obligatorio</span>}
+
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputAddress">Address</label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    <div className="form-group mb-2">
+                        <label>Email</label>
+                        <input type="email"
+                            className="form-control"
+                            name='email'
+                            defaultValue={usuarioActual.email}
+                            disabled={enable}
+                            {...register("email", { required: true })}
+                        />
+                        {errors.nombre && <span className='text-danger'>El email es obligatorio</span>}
                     </div>
-                    <div class="form-group">
-                        <label for="inputAddress2">Address 2</label>
-                        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputCity">City</label>
-                            <input type="text" class="form-control" id="inputCity">
+                    {
+                        enable == false &&
+                        <div className="form-group mb-2">
+                            <label>Nueva Contraseña</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                name='password'
+                                {...register("password")}
+                            />
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputState">State</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
+                    }
+                    {
+                        enable == false &&
+
+                        <div className='d-flex justify-content-between '>
+                            <button className='btn-custom' onClick={() => setEnable(true)}>Cancelar</button>
+                            <button type="submit" className="btn btn-dark">guardar cambios</button>
                         </div>
-                        <div class="form-group col-md-2">
-                            <label for="inputZip">Zip</label>
-                            <input type="text" class="form-control" id="inputZip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    Check me out
-                                </label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+
+                    }
                 </form>
             </div>
         </div>

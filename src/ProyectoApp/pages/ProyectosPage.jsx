@@ -10,16 +10,19 @@ import { useForm } from 'react-hook-form'
 
 export const ProyectosPage = () => {
 
-    const { obtenerMisProyectos, proyectos } = useProyectoStore();
+    const { obtenerMisProyectos, Proyectos } = useProyectoStore();
     const { register, handleSubmit } = useForm()
 
     useEffect(() => {
         obtenerMisProyectos();
-    }, [proyectos.length])
+    }, [])
 
-    const submit = () => {
-        obtenerMisProyectos();
+    const searchSubmit = (data, e) => {
+        e.preventDefault();
+        obtenerMisProyectos(data.search);
     }
+
+
 
     return (
         <div className='p-4'>
@@ -40,10 +43,15 @@ export const ProyectosPage = () => {
                 </div>
             </section>
             <div className=''>
-                <form action="">
+                <form action="" onSubmit={handleSubmit(searchSubmit)}>
                     <div className="input-group mb-3">
-                        <input type="text" name='search' className="form-control" placeholder="Titulo de la etiqueta" />
-                        <button className="input-group-text shadow-none px-4 btn-warning">
+                        <input type="text" name='search'
+                            className="form-control"
+                            placeholder="Titulo de la etiqueta"
+                            {...register("search")}
+
+                        />
+                        <button className="input-group-text shadow-none px-4 btn-warning" type='submit'>
                             <i className="bi bi-search"></i>
                         </button>
                     </div>
@@ -60,7 +68,7 @@ export const ProyectosPage = () => {
                     </thead>
 
                     <tbody>
-                        <ProyectosTable proyectos={proyectos} />
+                        <ProyectosTable proyectos={Proyectos} />
                     </tbody>
                 </table>
             </section>

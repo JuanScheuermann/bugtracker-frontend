@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
-    AgregarMiembro,
+
     ObtenerProyectoActual,
     ObtenerProyectos,
     Modificarproyecto,
     CrearMensajeError,
-    LimpiarMensajeError
+    LimpiarMensajeError,
+    setMisProyectos
+
 } from '../store/Proyecto/ProyectoSlice'
 import { proyectoApi } from "../Api/configuracion"
 import { useNavigate } from "react-router-dom"
@@ -23,6 +25,7 @@ export const useProyectoStore = () => {
         AutorId,
         EstadoDesarrollo,
         Miembros,
+        Proyectos,
         MensajeError } = useSelector(state => state.proyecto)
 
     const { user } = useAuthStore();
@@ -67,8 +70,9 @@ export const useProyectoStore = () => {
     const obtenerMisProyectos = async (cadenabuscar = "") => {
 
         try {
-            const { data } = await proyectoApi.get(`proyecto/${user.uid}/all`);
-            setProyectos(data);
+            const { data } = await proyectoApi.get(`proyecto/${user.uid}/all?cadenaBuscar=${cadenabuscar}`);
+            //setProyectos(data);
+            dispatch(setMisProyectos(data));
 
         } catch (error) {
 
@@ -82,7 +86,7 @@ export const useProyectoStore = () => {
 
             const { data } = await proyectoApi.get(`proyecto/${user.uid}/participando`);
             console.log(data)
-            setProyectos(data);
+            dispatch(setMisProyectos(data));
         } catch (error) {
 
         }
@@ -100,7 +104,10 @@ export const useProyectoStore = () => {
                 autorNombre: user.nombre
             }
             const { data } = await proyectoApi.post('proyecto/add', proyecto);
-            setProyectos([...proyectos, proyecto]);
+            /* const proyec = [...Proyectos, proyecto] */
+            //
+            obtenerMisProyectos();
+            //dispatch(setMisProyectos(proyec));
 
         } catch (error) {
             console.log(error)
@@ -140,8 +147,9 @@ export const useProyectoStore = () => {
         try {
 
             const { data } = await proyectoApi.delete(`proyecto/proyecto_delete/${pid}`);
-            setProyectos(p => p.filter(pr => pr.id != pid));
-            console.log(data);
+            /* setProyectos(p => p.filter(pr => pr.id != pid));
+            console.log(data); */
+            obtenerMisProyectos();
 
         } catch (error) {
 
@@ -160,11 +168,11 @@ export const useProyectoStore = () => {
         Descripcion,
         Autor,
         EstadoDesarrollo,
-        //miem,
         Miembros,
         MensajeError,
-        proyectos,
+        //proyectos,
         AutorId,
+        Proyectos,
 
         //Metodos
         ProyectoActual,

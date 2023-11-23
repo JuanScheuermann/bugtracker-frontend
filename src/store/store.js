@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist'
 import { useReducer } from "react";
 import localStorage from "redux-persist/es/storage";
+import { comentariosSlice } from "./Proyecto/ComentariosSlice";
 
 /* const persistConfig = {
     key: 'root',
@@ -26,7 +27,8 @@ export const store = configureStore({
     reducer: {
         auth: authSlice.reducer,
         proyecto: proyectoSlice.reducer,
-        etiqueta: etiquetaSlice.reducer
+        etiqueta: etiquetaSlice.reducer,
+        comentarios: comentariosSlice.reducer
     },
 
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

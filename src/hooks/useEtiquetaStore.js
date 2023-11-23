@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { setEtiqueta, crearMensajeError, borrarMensajeError, modEtiqueta } from '../store/Proyecto/EtiquetaSlice'
+import { setEtiquetas } from '../store/Proyecto/ProyectoSlice'
 import { proyectoApi } from "../Api/configuracion";
 import { useState } from "react";
 
@@ -12,18 +13,21 @@ export const useEtiquetaStore = () => {
         Estado,
         Prioridad,
         Comentarios,
-        MensajeError
+        MiembroId,
+        MensajeError,
     } = useSelector(state => state.etiqueta);
 
-    const [etiquetas, setEtiquetas] = useState([]);
+    const { Etiquetas } = useSelector(state => state.proyecto);
+
+    //const [etiquetas, setEtiquetas] = useState([]);
     const dispatch = useDispatch();
 
-    const obtenerEtiquetas = async (pid) => {
+    const obtenerEtiquetas = async (pid, cadenaBuscar = "") => {
 
         try {
 
-            const { data } = await proyectoApi.get(`etiqueta/${pid}/all`)
-            setEtiquetas(data);
+            const { data } = await proyectoApi.get(`etiqueta/${pid}/all?cadenaBuscar=${cadenaBuscar}`)
+            dispatch(setEtiquetas(data));
         } catch (error) {
 
             dispatch(crearMensajeError(error));
@@ -59,12 +63,15 @@ export const useEtiquetaStore = () => {
                 proyectoId: Number(pid)
             }
             const { data } = await proyectoApi.post(`etiqueta/etiqueta_add`, nuevaEtiqueta);
-            setEtiquetas(data);
+
+            const etiq = [...Etiquetas]
+            obtenerEtiquetas(pid)
 
 
         } catch (error) {
 
-            dispatch(crearMensajeError(error));
+            console.log(error);
+            dispatch(crearMensajeError(error.response.data));
             setTimeout(() => {
                 dispatch(borrarMensajeError)
             }, 10);
@@ -81,7 +88,7 @@ export const useEtiquetaStore = () => {
             }
 
             const { data } = await proyectoApi.put(`etiqueta/etiqueta_mod/${id}`, nuevaEtiqueta);
-            setEtiquetas([...etiquetas])
+            //setEtiquetas([...Etiquetas])
             dispatch(modEtiqueta(nuevaEtiqueta));
 
         } catch (error) {
@@ -98,7 +105,7 @@ export const useEtiquetaStore = () => {
         try {
 
             await proyectoApi.put(`etiqueta/etiqueta_cerrar/${eid}`);
-            setEtiquetas([]);
+            //setEtiquetas([]);
 
         } catch (error) {
 
@@ -113,7 +120,7 @@ export const useEtiquetaStore = () => {
         try {
 
             await proyectoApi.delete(`etiqueta/etiqueta_eliminar/${eid}`);
-            const filEtiquetas = etiquetas.filter(x => x.id != eid);
+            const filEtiquetas = Etiquetas.filter(x => x.id != eid);
             setEtiquetas(filEtiquetas);
 
         } catch (error) {
@@ -133,8 +140,9 @@ export const useEtiquetaStore = () => {
         Estado,
         Prioridad,
         Comentarios,
-        etiquetas,
+        Etiquetas,
         MensajeError,
+        MiembroId,
 
         //metodos
         obtenerEtiqueta,

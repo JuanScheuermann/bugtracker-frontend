@@ -14,6 +14,7 @@ import { ModalEliminarProyecto } from '../components/ModalEliminarProyecto'
 import { ModalEliminarMiembro } from '../components/ModalEliminarMiembro';
 import { useEtiquetaStore } from '../../hooks/useEtiquetaStore';
 import { prioridad, prioridadC } from '../types/types'
+import { useForm } from 'react-hook-form'
 
 
 export const ProyectoPage = () => {
@@ -32,8 +33,11 @@ export const ProyectoPage = () => {
         AutorId
     } = useProyectoStore();
 
-    const { miembros, obtenerMiembros, eliminarMiembro } = useMiembrosService();
-    const { obtenerEtiquetas, etiquetas } = useEtiquetaStore();
+
+
+    const { Miembros, obtenerMiembros, eliminarMiembro } = useMiembrosService();
+    const { obtenerEtiquetas, Etiquetas } = useEtiquetaStore();
+    const { register, handleSubmit } = useForm()
 
 
     const { uid } = JSON.parse(localStorage.getItem('user'));
@@ -44,19 +48,22 @@ export const ProyectoPage = () => {
         await obtenerEtiquetas(id);
     }
 
-    const fetchMiembros = async () => await obtenerMiembros(id);
+    const search = (data, e) => {
+        e.preventDefault();
+        obtenerEtiquetas(id, data.search)
+    }
 
     useEffect(() => {
         ProyectoActual(id);
     }, [])
 
     useEffect(() => {
-        fetchMiembros()
-    }, [miembros.length])
+        obtenerMiembros(id);
+    }, [])
 
     useEffect(() => {
         fetchEtiquetas();
-    }, [etiquetas.length])
+    }, [])
 
 
 
@@ -112,13 +119,21 @@ export const ProyectoPage = () => {
 
                                 </button>
                             </div>
-                            <div className="input-group mb-3">
+                            <form action="" onSubmit={handleSubmit(search)}>
+                                <div className="input-group mb-3">
 
-                                <input type="text" className="form-control" placeholder="Titulo de la etiqueta" />
-                                <button className="input-group-text shadow-none px-4 btn-warning">
-                                    <i className="bi bi-search"></i>
-                                </button>
-                            </div>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Titulo de la etiqueta"
+                                        name='search'
+                                        {...register("search")}
+                                    />
+                                    <button className="input-group-text shadow-none px-4 btn-warning" type='submit'>
+                                        <i className="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
                         <div>
@@ -127,18 +142,24 @@ export const ProyectoPage = () => {
                                     <tr>
                                         <th>Descripcion</th>
                                         <th>Prioridad</th>
+                                        <th>Autor</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        etiquetas.map(e => (
+                                        Etiquetas.map(e => (
                                             <tr key={e.id}>
                                                 <td>{e.titulo}</td>
                                                 {/*  <td>{
                                                     miembros.find(m => m.id == e.miembroId)["apiNom"]
                                                 }</td> */}
                                                 <td><Badge bg={prioridadC[e.prioridad]}>{prioridad[e.prioridad]}</Badge></td>
+
+                                                <th>{Miembros.map(m => {
+                                                    if (m.id == e.miembroId) return m.email
+                                                })}</th>
+
                                                 <td><Link to={`/proyecto/${id}/etiquetas/${e.id}`}>ver mas</Link></td>
                                             </tr>
                                         ))
@@ -175,10 +196,10 @@ export const ProyectoPage = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            miembros.filter(u => u.usuarioId != uid).map(u => (
+                                            Miembros.filter(u => u.usuarioId != uid).map(u => (
                                                 <tr key={u.id}>
                                                     <td>{u.apiNom}</td>
-                                                    <td>{u.estado}</td>
+                                                    <td>{u.email}</td>
                                                     {
 
                                                         AutorId == uid &&

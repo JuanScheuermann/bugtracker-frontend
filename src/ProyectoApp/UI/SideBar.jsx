@@ -86,11 +86,29 @@ export const SideBar = () => {
                         </li>
 
                         <li className='nav-item my-1'>
-                            <a href="#" className='nav-link' onClick={cerrarSesion}>
+                            <Link to='/perfil' className='nav-link'>
                                 <i className="bi bi-person-fill text-dark fs-4"></i>
+                                <span className='ms-3 text-dark fs-5'>Mi perfil</span>
+                            </Link>
+                        </li>
+
+                        {
+                            user.rol == 'Admin' &&
+                            <li className='nav-item my-1'>
+                                <Link to='/admin/usuarios' className='nav-link'>
+                                    <i className="bi bi-person-fill text-dark fs-4"></i>
+                                    <span className='ms-3 text-dark fs-5'>Usuarios</span>
+                                </Link>
+                            </li>
+                        }
+
+                        <li className='nav-item my-1'>
+                            <a href="#" className='nav-link' onClick={cerrarSesion}>
+                                <i className="bi bi-box-arrow-left text-black fs-4"></i>
                                 <span className='ms-3 text-dark fs-5'>Cerrar sesion</span>
                             </a>
                         </li>
+
                     </ul>
                 </Offcanvas.Body>
             </Offcanvas>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { onLoging, onLogout, onChecking, borrarMensajeError } from '../store/Auth/authSlice';
 import { proyectoApi } from '../Api/configuracion'
 import { Navigate, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export const useAuthStore = () => {
 
@@ -19,9 +20,10 @@ export const useAuthStore = () => {
             localStorage.setItem('token', data.token)
             localStorage.setItem('user', JSON.stringify({
                 nombre: data.nombre,
-                uid: data.uid
+                uid: data.uid,
+                rol: data.rol
             }));
-            dispatch(onLoging({ uid: data.uid, nombre: data.nombre }))
+            dispatch(onLoging({ uid: data.uid, nombre: data.nombre, rol: data.rol }))
 
         } catch (err) {
             console.log(err.response.data?.message)
@@ -79,7 +81,8 @@ export const useAuthStore = () => {
         try {
 
             await proyectoApi.post(`auth/verificar`, { email });
-            navigate('/auth/verificar/cambiar/abc1234');
+
+            Swal.fire('Verificado', "Se le a enviado un correo para continuar", 'success');
         } catch (err) {
 
             dispatch(onLogout("Usuario no encontrado"));
@@ -105,8 +108,8 @@ export const useAuthStore = () => {
         }
     }
 
-    const setLocalUser = ({ nombre, uid }) => {
-        dispatch(onLoging({ uid, nombre }));
+    const setLocalUser = ({ nombre, uid, rol }) => {
+        dispatch(onLoging({ uid, nombre, rol }));
     }
     const startLogout = () => {
         localStorage.removeItem('user')

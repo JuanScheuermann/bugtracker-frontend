@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Badge } from 'react-bootstrap'
 import { estadoD } from '../types/types'
 
-export const ProyectosTable = ({ proyectos, mostrarutor = false }) => {
+export const ProyectosTable = ({ proyectos = [], mostrarutor = false }) => {
 
 
     return proyectos.map((p) => (

@@ -78,9 +78,9 @@ export const LoginPage = () => {
                   </button>
                 </div>
 
-                {/* <div className='mt-2'>
-                <span>Olvidaste tu contraseña ? <a href="">Click aqui</a></span>
-              </div> */}
+                <div className='mt-2'>
+                  <span>Olvidaste tu contraseña ? <Link to='/auth/verificar'>Click aqui</Link></span>
+                </div>
 
               </form>
             </div>

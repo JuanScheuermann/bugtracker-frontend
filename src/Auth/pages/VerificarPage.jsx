@@ -14,6 +14,7 @@ export const VerificarPage = () => {
     const formSubmit = (data, e) => {
         e.preventDefault();
         sendMail({ email: data.email });
+
     }
 
     useEffect(() => {
@@ -49,7 +50,7 @@ export const VerificarPage = () => {
 
                                 <div className="d-flex align-items-center mb-2">
                                     <button type="submit" className="btn btn-dark ms-auto w-100">
-                                        Inicar sesion
+                                        verificar
                                     </button>
                                 </div>
 

@@ -5,6 +5,9 @@ import { NotasPage } from './NotasPage'
 import { NuevaEtiquetaPage } from './NuevaEtiquetaPage'
 import { ProyectosParticipacion } from './ProyectosParticipacion'
 import { AgregarMiembro } from './AgregarMiembro'
+import { PerfilPage } from './PerfilPage'
+import { AdminUsuariosPage } from './AdminUsuariosPage'
+
 export {
     ProyectoPage,
     ProyectosPage,
@@ -12,5 +15,7 @@ export {
     NuevoProyectoPage,
     NotasPage,
     NuevaEtiquetaPage,
-    AgregarMiembro
+    AgregarMiembro,
+    PerfilPage,
+    AdminUsuariosPage
 }

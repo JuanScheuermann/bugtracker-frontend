@@ -12,7 +12,7 @@ export const AppRouter = () => {
     const getUser = () => {
         let user = JSON.parse(localStorage.getItem('user'))
         if (user != null) {
-            setLocalUser({ nombre: user.nombre, uid: user.uid });
+            setLocalUser({ nombre: user.nombre, uid: user.uid, rol: user.rol });
         } else {
             startLogout();
         }

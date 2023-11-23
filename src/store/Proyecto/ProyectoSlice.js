@@ -10,6 +10,8 @@ export const proyectoSlice = createSlice({
         AutorId: '',
         EstadoDesarrollo: '',
         Miembros: [],
+        Etiquetas: [],
+        Proyectos: [],
         MensajeError: undefined
     },
     reducers: {
@@ -28,8 +30,9 @@ export const proyectoSlice = createSlice({
             state.Autor = payload.Autor
             state.AutorId = payload.AutorId
             state.EstadoDesarrollo = payload.EstadoDesarrollo
-            state.Miembros = payload.Miembros
-            state.MensajeError = undefined
+            state.Miembros = payload.Miembros,
+                state.MensajeError = undefined
+
         },
 
         Modificarproyecto: (state, { payload }) => {
@@ -39,8 +42,16 @@ export const proyectoSlice = createSlice({
             state.MensajeError = undefined
         },
 
-        AgregarMiembro: (state, { payload }) => {
-            state.Miembros = [...payload]
+        setEtiquetas: (state, { payload }) => {
+            state.Etiquetas = payload
+        },
+
+        setMiembros: (state, { payload }) => {
+            state.Miembros = payload
+        },
+
+        setMisProyectos: (state, { payload }) => {
+            state.Proyectos = payload
         },
 
         CrearMensajeError: (state, { payload }) => {
@@ -55,11 +66,13 @@ export const proyectoSlice = createSlice({
 
 
 export const {
-    AgregarMiembro,
+    setMiembros,
     CrearNuevoProyecto,
     CrearMensajeError,
     LimpiarMensajeError,
     ObtenerProyectoActual,
     ObtenerProyectos,
-    Modificarproyecto
+    Modificarproyecto,
+    setEtiquetas,
+    setMisProyectos
 } = proyectoSlice.actions;

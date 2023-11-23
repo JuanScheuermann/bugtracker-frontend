@@ -18,23 +18,24 @@ export const NotasPage = () => {
         Prioridad,
         Fecha,
         MensajeError,
-        AutorId,
-        //Comentarios,
+        MiembroId,
         obtenerEtiqueta,
         cerrarEtiqueta,
         eliminarEtiqueta
     } = useEtiquetaStore();
 
-    const { comentarios, obtenerComentarios, agregarComentario } = useComentariosService()
+    const { comentarios, obtenerComentarios, agregarComentario, eliminarComentario } = useComentariosService()
 
     const { uid } = JSON.parse(localStorage.getItem('user'));
     const autorPId = JSON.parse(localStorage.getItem('proyecto'))
     const miembros = JSON.parse(sessionStorage.getItem('miembros'));
 
-    const miembroId = (uid) => {
+    const miembroActual = (uid) => {
         const au = miembros.find(x => x.usuarioId == uid)
         return au
     }
+
+    const mActual = miembroActual(uid)
 
     useEffect(() => {
         obtenerEtiqueta(eid)
@@ -42,7 +43,7 @@ export const NotasPage = () => {
 
     useEffect(() => {
         obtenerComentarios(eid);
-    }, [comentarios.length])
+    }, [])
 
 
 
@@ -109,7 +110,7 @@ export const NotasPage = () => {
 
                 <div className='mt-2'>
                     {
-                        Estado == 1 && (autorPId == uid) &&
+                        (Estado == 1 && (autorPId == uid) || (mActual.id == MiembroId)) &&
 
                         <>
                             <hr />
@@ -156,8 +157,9 @@ export const NotasPage = () => {
                     comentarios={comentarios}
                     Estado={Estado}
                     agregarC={agregarComentario}
-                    Miembro={miembroId(uid)}
+                    Miembro={miembroActual(uid)}
                     eid={eid}
+                    eliminarC={eliminarComentario}
                 />
                 {/* <div className='text-center mt-4'>
                     <h4 style={{ color: 'gray' }}>No hay comentarios</h4>

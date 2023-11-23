@@ -3,11 +3,13 @@ import { Miembros } from '../components/Miembros'
 import { useMiembrosService, useUsuarioService } from '../../hooks'
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useForm } from 'react-hook-form';
 
 export const AgregarMiembro = () => {
 
     const { usuarios, obtenerNuevosMiembros } = useUsuarioService();
     const { miembros, agregarMiembro } = useMiembrosService();
+    const { register, handleSubmit } = useForm();
     const [newmiembros, setMiembros] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams();
@@ -31,7 +33,13 @@ export const AgregarMiembro = () => {
 
     }
 
-    const handleSubmit = (e) => {
+    const search = (data) => {
+
+        obtenerNuevosMiembros(id, data.search);
+
+    }
+
+    const submit = (e) => {
         e.preventDefault();
 
         if (newmiembros.length <= 0) {
@@ -46,10 +54,15 @@ export const AgregarMiembro = () => {
     return (
         <div>
             <div className='mt-3 ' style={{ margin: '0 auto', width: '90%' }}>
-                <form action="" onSubmit={handleSubmit}>
+                <form action="" onSubmit={submit}>
                     <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder="Correo del usuario" />
-                        <button className="input-group-text shadow-none px-4 btn-warning">
+                        <input type="text" className="form-control"
+                            name='search'
+                            placeholder="Correo del usuario"
+                            {...register("search")}
+
+                        />
+                        <button className="input-group-text shadow-none px-4 btn-warning" onClick={handleSubmit(search)}>
                             <i className="bi bi-search"></i>
                         </button>
                     </div>
@@ -68,7 +81,7 @@ export const AgregarMiembro = () => {
                         </table>
                     </div>
 
-                    <button type='submit' className='btn btn-primary'>
+                    <button type='submit' className='btn btn-primary mt-2'>
                         Agregar miembros
                     </button>
                 </form>

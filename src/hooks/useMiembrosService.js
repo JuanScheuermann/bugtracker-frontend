@@ -2,13 +2,14 @@
 import { useState } from 'react'
 import { proyectoApi } from '../Api/configuracion'
 import { useProyectoStore } from './useProyectoStore';
-import { CrearMensajeError, LimpiarMensajeError } from '../store/Proyecto/ProyectoSlice'
-import { useDispatch } from 'react-redux';
+import { CrearMensajeError, LimpiarMensajeError, setMiembros } from '../store/Proyecto/ProyectoSlice'
+import { useDispatch, useSelector } from 'react-redux';
 
 export const useMiembrosService = () => {
 
-    const { MensajeError } = useProyectoStore();
-    const [miembros, setMiembros] = useState([]);
+    //const { MensajeError } = useProyectoStore();
+    const { Miembros } = useSelector(state => state.proyecto);
+    //const [miembros, setMiembros] = useState([]);
     const dispatch = useDispatch();
 
 
@@ -16,8 +17,8 @@ export const useMiembrosService = () => {
 
         try {
             const { data } = await proyectoApi.get(`miembro/${pId}`)
-            setMiembros([...data]);
-            sessionStorage.setItem('miembros', JSON.stringify(miembros))
+            dispatch(setMiembros(data));
+            sessionStorage.setItem('miembros', JSON.stringify(data))
 
         } catch (error) {
             dispatch(CrearMensajeError("ocurrio un error inesperado"));
@@ -31,7 +32,7 @@ export const useMiembrosService = () => {
     const agregarMiembro = async (pId, newMiembros) => {
         try {
             await proyectoApi.post(`miembro/${pId}/miembro_add`, newMiembros);
-            setMiembros(newMiembros);
+            await obtenerMiembros(pId);
 
         } catch (error) {
             dispatch(CrearMensajeError("ocurrio un error inesperado"));
@@ -47,7 +48,8 @@ export const useMiembrosService = () => {
 
             const { data } = await proyectoApi.delete(`miembro/${pId}/eliminar_miembro/${mId}`);
             //const actualM = miembros.map(u => u).filter(m => m.id !== mId);
-            setMiembros(m => m.filter(m => m.id != mId));
+            //ispatch(setMiembros(actualM));
+            await obtenerMiembros(pId)
 
         } catch (error) {
 
@@ -59,7 +61,7 @@ export const useMiembrosService = () => {
     }
 
     return {
-        miembros,
+        Miembros,
 
         obtenerMiembros,
         eliminarMiembro,

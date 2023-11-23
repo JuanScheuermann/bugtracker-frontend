@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import { proyectoApi } from '../Api/configuracion'
 import { useSelector } from 'react-redux';
+import { set } from 'react-hook-form';
 
 export const useUsuarioService = () => {
-
-    const { user, mensajeError } = useSelector(state => state.Auth);
+    //const { user, mensajeError } = useSelector(state => state.Auth);
     const [usuarios, setUsuarios] = useState([]);
     const [miembros, setMiembros] = useState([]);
+    const [usuarioActual, setUsuarioActual] = useState({});
+    const [mensajeError, setMensajeError] = useState(undefined);
 
     const obtenerUsuarios = async () => {
         try {
@@ -24,10 +26,10 @@ export const useUsuarioService = () => {
 
         try {
             const { data } = await proyectoApi.get(`usuario/${uid}`);
-            console.log(data);
+            setUsuarioActual(data);
 
         } catch (error) {
-
+            console.log(error)
         }
     }
 
@@ -43,22 +45,71 @@ export const useUsuarioService = () => {
 
     }
 
-    const obtenerNuevosMiembros = async (pId) => {
+    const obtenerNuevosMiembros = async (pId, cadenaBuscar = "") => {
         try {
-            const { data } = await proyectoApi.get(`usuario/${pId}`)
-            console.log(data);
+            const { data } = await proyectoApi.get(`usuario/${pId}/nuevos_m?cadenaBuscar=${cadenaBuscar}`)
             setUsuarios(data);
         } catch (error) {
             console.log(error)
         }
     }
 
+    const modUsuario = async ({ uid, nombre, apellido, email, password }) => {
+
+        try {
+
+            const usuarioEdit = {
+                Id: uid,
+                nombre,
+                apellido,
+                email,
+                password: password == null ? "" : password,
+                rol: "Usuario",
+                estado: "Activo",
+            }
+
+            const { data } = await proyectoApi.put(`usuario/mod_usuario`, usuarioEdit);
+            setUsuarioActual({ nombre, apellido, email });
+
+            const user = JSON.parse(localStorage.getItem('user'));
+            user.nombre = nombre + ' ' + apellido;
+            localStorage.setItem('user', JSON.stringify(user));
+            console.log(data)
+
+        } catch (error) {
+            console.log(error);
+            setMensajeError("Ocurrio un error inesperado");
+            setTimeout(() => {
+                setMensajeError(undefined)
+            }, 10);
+        }
+    }
+
+    const agregarPermisoUsuario = async (uid, rol) => {
+
+        try {
+
+            await proyectoApi.put(`usuario/${uid}/permisos`, { rol })
+            await obtenerUsuarios();
+        } catch (error) {
+            console.log(error)
+            setMensajeError("Ocurrio un error")
+            setTimeout(() => {
+                setMensajeError(undefined)
+            }, 10);
+        }
+    }
+
     return {
         usuarios,
         miembros,
+        usuarioActual,
         obtenerMiembros,
         obtenerUsuarios,
         obtenerNuevosMiembros,
-        obtenerUsuario
+        obtenerUsuario,
+        mensajeError,
+        modUsuario,
+        agregarPermisoUsuario
     }
 }
