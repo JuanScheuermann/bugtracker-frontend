@@ -11,14 +11,17 @@ export const useUsuarioService = () => {
     const [usuarioActual, setUsuarioActual] = useState({});
     const [mensajeError, setMensajeError] = useState(undefined);
 
-    const obtenerUsuarios = async () => {
+    const obtenerUsuarios = async (cadenaBuscar = "") => {
         try {
             let user = JSON.parse(localStorage.getItem('user'))
 
-            const { data } = await proyectoApi.get(`usuario/all`);
+            const { data } = await proyectoApi.get(`usuario/all?cadenaBuscar=${cadenaBuscar}`);
             setUsuarios([...data].filter(u => u.id != user.uid))
         } catch (error) {
-            console.log(error)
+            setMensajeError(error.response.data)
+            setTimeout(() => {
+                setMensajeError("")
+            }, 10)
         }
     }
 
@@ -29,7 +32,10 @@ export const useUsuarioService = () => {
             setUsuarioActual(data);
 
         } catch (error) {
-            console.log(error)
+            setMensajeError(error.response.data)
+            setTimeout(() => {
+                setMensajeError("")
+            }, 10)
         }
     }
 
@@ -40,7 +46,10 @@ export const useUsuarioService = () => {
             setMiembros(data);
 
         } catch (error) {
-            console.log(error)
+            setMensajeError(error.response.data)
+            setTimeout(() => {
+                setMensajeError("")
+            }, 10)
         }
 
     }
@@ -50,7 +59,10 @@ export const useUsuarioService = () => {
             const { data } = await proyectoApi.get(`usuario/${pId}/nuevos_m?cadenaBuscar=${cadenaBuscar}`)
             setUsuarios(data);
         } catch (error) {
-            console.log(error)
+            setMensajeError(error.response.data)
+            setTimeout(() => {
+                setMensajeError("")
+            }, 10)
         }
     }
 
@@ -74,10 +86,9 @@ export const useUsuarioService = () => {
             const user = JSON.parse(localStorage.getItem('user'));
             user.nombre = nombre + ' ' + apellido;
             localStorage.setItem('user', JSON.stringify(user));
-            console.log(data)
 
         } catch (error) {
-            console.log(error);
+
             setMensajeError("Ocurrio un error inesperado");
             setTimeout(() => {
                 setMensajeError(undefined)
@@ -92,7 +103,22 @@ export const useUsuarioService = () => {
             await proyectoApi.put(`usuario/${uid}/permisos`, { rol })
             await obtenerUsuarios();
         } catch (error) {
-            console.log(error)
+
+            setMensajeError("Ocurrio un error")
+            setTimeout(() => {
+                setMensajeError(undefined)
+            }, 10);
+        }
+    }
+
+    const bloquearUsuario = async (uid) => {
+
+        try {
+            await proyectoApi.put(`usuario/${uid}/bloquear`);
+            await obtenerUsuarios();
+
+        } catch {
+
             setMensajeError("Ocurrio un error")
             setTimeout(() => {
                 setMensajeError(undefined)
@@ -110,6 +136,7 @@ export const useUsuarioService = () => {
         obtenerUsuario,
         mensajeError,
         modUsuario,
-        agregarPermisoUsuario
+        agregarPermisoUsuario,
+        bloquearUsuario
     }
 }

@@ -5,7 +5,7 @@ import { setComentarios } from '../store/Proyecto/ComentariosSlice'
 
 export const useComentariosService = () => {
 
-    //const [comentarios, setComentarios] = useState([]);
+    const [mensajeError, setMensajeError] = useState(undefined);
     const {
         comentarios
     } = useSelector(state => state.comentarios)
@@ -21,7 +21,10 @@ export const useComentariosService = () => {
             dispatch(setComentarios(data));
 
         } catch (error) {
-            console.log(error)
+            setMensajeError("Ocurruio un error inesperado, intente mas tarde");
+            setTimeout(() => {
+                setMensajeError(undefined);
+            }, 10);
         }
     }
 
@@ -37,7 +40,10 @@ export const useComentariosService = () => {
             await obtenerComentarios(etiquetaId)
 
         } catch (error) {
-            console.log(error)
+            setMensajeError("Ocurruio un error inesperado, intente mas tarde");
+            setTimeout(() => {
+                setMensajeError(undefined);
+            }, 10);
         }
     }
 
@@ -62,7 +68,10 @@ export const useComentariosService = () => {
 
             await obtenerComentarios(eid)
         } catch (error) {
-            console.log(error)
+            setMensajeError("Ocurruio un error inesperado, intente mas tarde");
+            setTimeout(() => {
+                setMensajeError(undefined);
+            }, 10);
         }
     }
 
@@ -73,7 +82,10 @@ export const useComentariosService = () => {
 
             dispatch(setComentarios(comentarios.filter(x => x.id != cid)));
         } catch (error) {
-            console.log(error)
+            setMensajeError("Ocurruio un error inesperado, intente mas tarde");
+            setTimeout(() => {
+                setMensajeError(undefined);
+            }, 10);
         }
     }
 
@@ -82,6 +94,7 @@ export const useComentariosService = () => {
         obtenerComentarios,
         agregarComentario,
         editarComentario,
-        eliminarComentario
+        eliminarComentario,
+        mensajeError
     }
 }

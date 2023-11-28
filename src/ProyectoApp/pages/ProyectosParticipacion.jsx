@@ -5,7 +5,7 @@ import { useProyectoStore, useAuthStore } from '../../hooks'
 
 export const ProyectosParticipacion = () => {
 
-    const { proyectos, obtenerProyectosParticipacion } = useProyectoStore();
+    const { Proyectos, obtenerProyectosParticipacion } = useProyectoStore();
 
     useEffect(() => {
         obtenerProyectosParticipacion()
@@ -39,7 +39,7 @@ export const ProyectosParticipacion = () => {
                     </thead>
 
                     <tbody>
-                        <ProyectosTable proyectos={proyectos} mostrarutor={true} />
+                        <ProyectosTable proyectos={Proyectos} mostrarutor={true} />
                     </tbody>
                 </table>
             </section>

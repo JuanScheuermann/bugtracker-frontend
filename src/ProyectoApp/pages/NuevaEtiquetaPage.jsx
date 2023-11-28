@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useEtiquetaStore } from '../../hooks/useEtiquetaStore';
 import Swal from 'sweetalert2'
 
@@ -9,11 +9,11 @@ export const NuevaEtiquetaPage = () => {
     const { id } = useParams();
     const { handleSubmit, register, formState: { errors } } = useForm();
     const { crearEtiqueta, MensajeError } = useEtiquetaStore();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     const submitForm = (data, e) => {
+
         e.preventDefault();
-        console.log(data.prioridad);
         crearEtiqueta({
             titulo: data.titulo,
             detalles: data.detalles,
@@ -21,7 +21,6 @@ export const NuevaEtiquetaPage = () => {
             pid: id
         });
 
-        navigate(`/proyecto/${id}`);
     }
 
     useEffect(() => {

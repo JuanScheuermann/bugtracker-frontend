@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Modal, Form } from 'react-bootstrap'
 import Swal from 'sweetalert2';
 
-export const ModalEditarusuario = ({ rol, uid, agregarPermisos, mensajeError }) => {
+export const ModalEditarusuario = ({ rol, uid, agregarPermisos, mensajeError, estado }) => {
 
     const { register, handleSubmit } = useForm()
     const [show, setShow] = useState(false);
@@ -33,7 +33,10 @@ export const ModalEditarusuario = ({ rol, uid, agregarPermisos, mensajeError }) 
 
     return (
         <>
-            <button className='btn-custom mx-1' onClick={handleShow}>
+            <button className='btn-custom mx-1'
+                onClick={handleShow}
+                disabled={estado}
+            >
                 <i className="bi bi-pencil-square me-1"></i>
                 ...
             </button>
@@ -57,7 +60,7 @@ export const ModalEditarusuario = ({ rol, uid, agregarPermisos, mensajeError }) 
                             Otorgar permisos de administrador
                         </Form.Group>
 
-                        <button variant="primary" className='btn btn-primary' type='submit'>
+                        <button variant="primary" className='btn btn-primary mt-3' type='submit'>
                             Aceptar
                         </button>
 

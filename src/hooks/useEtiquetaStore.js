@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setEtiqueta, crearMensajeError, borrarMensajeError, modEtiqueta } from '../store/Proyecto/EtiquetaSlice'
 import { setEtiquetas } from '../store/Proyecto/ProyectoSlice'
 import { proyectoApi } from "../Api/configuracion";
-import { useState } from "react";
+import { useNavigate } from 'react-router-dom'
 
 export const useEtiquetaStore = () => {
 
@@ -20,6 +20,7 @@ export const useEtiquetaStore = () => {
     const { Etiquetas } = useSelector(state => state.proyecto);
 
     //const [etiquetas, setEtiquetas] = useState([]);
+    const navigate = useNavigate()
     const dispatch = useDispatch();
 
     const obtenerEtiquetas = async (pid, cadenaBuscar = "") => {
@@ -62,18 +63,19 @@ export const useEtiquetaStore = () => {
                 prioridad: Number(prioridad),
                 proyectoId: Number(pid)
             }
-            const { data } = await proyectoApi.post(`etiqueta/etiqueta_add`, nuevaEtiqueta);
+            await proyectoApi.post(`etiqueta/etiqueta_add`, nuevaEtiqueta);
 
-            const etiq = [...Etiquetas]
+            //const etiq = [...Etiquetas]
             obtenerEtiquetas(pid)
+            navigate(`/proyecto/${pid}`);
+
 
 
         } catch (error) {
 
-            console.log(error);
             dispatch(crearMensajeError(error.response.data));
             setTimeout(() => {
-                dispatch(borrarMensajeError)
+                dispatch(borrarMensajeError())
             }, 10);
         }
     }
@@ -92,7 +94,6 @@ export const useEtiquetaStore = () => {
             dispatch(modEtiqueta(nuevaEtiqueta));
 
         } catch (error) {
-            console.log(error)
             dispatch(crearMensajeError(error));
             setTimeout(() => {
                 dispatch(borrarMensajeError)
@@ -121,7 +122,7 @@ export const useEtiquetaStore = () => {
 
             await proyectoApi.delete(`etiqueta/etiqueta_eliminar/${eid}`);
             const filEtiquetas = Etiquetas.filter(x => x.id != eid);
-            setEtiquetas(filEtiquetas);
+            dispatch(setEtiquetas(filEtiquetas))
 
         } catch (error) {
 

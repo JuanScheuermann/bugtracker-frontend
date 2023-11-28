@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { ProyectosTable } from '../components/ProyectosTable'
 import { useProyectoStore, useAuthStore } from '../../hooks'
 import { useForm } from 'react-hook-form'
+import { Paginacion } from '../components/Paginacion'
 
 
 
@@ -72,6 +73,9 @@ export const ProyectosPage = () => {
                     </tbody>
                 </table>
             </section>
+
+            {/*<Paginacion paginas={1} />*/}
+
         </div>
     )
 }

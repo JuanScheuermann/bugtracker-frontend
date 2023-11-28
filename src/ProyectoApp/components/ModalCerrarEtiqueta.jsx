@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-export const ModalCerrarEtiqueta = ({ eId, cerrarE, mensajeError }) => {
+export const ModalCerrarEtiqueta = ({ eId, cerrarE, mensajeError, pid }) => {
 
 
     const [show, setShow] = useState(false);
@@ -16,7 +16,7 @@ export const ModalCerrarEtiqueta = ({ eId, cerrarE, mensajeError }) => {
         console.log(eId);
         cerrarE(eId);
         handleClose();
-        navigate('/etiquetas', { replace: true });
+        navigate(`/proyecto/${pid}`)
     }
 
     useEffect(() => {

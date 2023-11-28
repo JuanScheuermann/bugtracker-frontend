@@ -46,7 +46,6 @@ export const useProyectoStore = () => {
 
             /* setMiem(data.miembros);
             console.log(miem) */
-            console.log(data)
 
             dispatch(ObtenerProyectoActual({
                 Titulo: data.titulo,
@@ -63,7 +62,10 @@ export const useProyectoStore = () => {
 
         } catch (error) {
 
-            console.log(error);
+            dispatch(CrearMensajeError("Ocurruio un error inesperado, intente mas tarde"));
+            setTimeout(() => {
+                dispatch(LimpiarMensajeError());
+            }, 10);
         }
     }
 
@@ -76,7 +78,10 @@ export const useProyectoStore = () => {
 
         } catch (error) {
 
-            console.log(error);
+            dispatch(CrearMensajeError("Ocurruio un error inesperado, intente mas tarde"));
+            setTimeout(() => {
+                dispatch(LimpiarMensajeError());
+            }, 10);
         }
     }
 
@@ -85,10 +90,12 @@ export const useProyectoStore = () => {
         try {
 
             const { data } = await proyectoApi.get(`proyecto/${user.uid}/participando`);
-            console.log(data)
             dispatch(setMisProyectos(data));
         } catch (error) {
-
+            dispatch(CrearMensajeError("Ocurruio un error inesperado, intente mas tarde"));
+            setTimeout(() => {
+                dispatch(LimpiarMensajeError());
+            }, 10);
         }
     }
 
@@ -110,7 +117,10 @@ export const useProyectoStore = () => {
             //dispatch(setMisProyectos(proyec));
 
         } catch (error) {
-            console.log(error)
+            dispatch(CrearMensajeError("Ocurruio un error inesperado, intente mas tarde"));
+            setTimeout(() => {
+                dispatch(LimpiarMensajeError());
+            }, 10);
         }
     }
 

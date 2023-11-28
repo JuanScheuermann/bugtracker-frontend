@@ -7,7 +7,8 @@ import { estadoA, prioridad } from '../types/types'
 import { ModalEditarEtiqueta } from '../components/ModalEditarEtiqueta';
 import { ModalCerrarEtiqueta } from '../components/ModalCerrarEtiqueta'
 import { ModalEliminarEtiqueta } from '../components/ModalEliminarEtiqueta'
-import { useComentariosService, useProyectoStore } from '../../hooks';
+import { useComentariosService } from '../../hooks';
+import Swal from 'sweetalert2'
 export const NotasPage = () => {
 
     const { id, eid } = useParams()
@@ -24,7 +25,7 @@ export const NotasPage = () => {
         eliminarEtiqueta
     } = useEtiquetaStore();
 
-    const { comentarios, obtenerComentarios, agregarComentario, eliminarComentario } = useComentariosService()
+    const { comentarios, mensajeError, obtenerComentarios, agregarComentario, eliminarComentario } = useComentariosService()
 
     const { uid } = JSON.parse(localStorage.getItem('user'));
     const autorPId = JSON.parse(localStorage.getItem('proyecto'))
@@ -45,6 +46,12 @@ export const NotasPage = () => {
         obtenerComentarios(eid);
     }, [])
 
+
+    useEffect(() => {
+        if (mensajeError !== undefined) {
+            Swal.fire('Error', mensajeError, 'error')
+        }
+    }, [mensajeError])
 
 
 
@@ -101,7 +108,7 @@ export const NotasPage = () => {
 
                 <div className='border mt-2 p-2'>
                     <h5>Detalles</h5>
-                    <p style={{ fontSize: '20px', fontWeight: '500', fontStyle: 'oblique' }}>
+                    <p className='fs-5'>
                         {Detalles}
                     </p>
                 </div>
@@ -110,7 +117,7 @@ export const NotasPage = () => {
 
                 <div className='mt-2'>
                     {
-                        (Estado == 1 && (autorPId == uid) || (mActual.id == MiembroId)) &&
+                        (Estado == 1 && ((autorPId == uid) || (mActual.id == MiembroId))) &&
 
                         <>
                             <hr />
@@ -125,6 +132,7 @@ export const NotasPage = () => {
                                 eId={eid}
                                 mensajeError={MensajeError}
                                 cerrarE={cerrarEtiqueta}
+                                pid={id}
                             />
 
                             <ModalEliminarEtiqueta
@@ -135,13 +143,16 @@ export const NotasPage = () => {
                             />
                         </>
 
-                        /* : <ModalEliminarEtiqueta
+                    }
+                    {
+                        (Estado == 2 && ((autorPId == uid) || (mActual.id == MiembroId)))
+                        &&
+                        <ModalEliminarEtiqueta
                             eId={eid}
                             eliminarE={eliminarEtiqueta}
                             mensajeError={MensajeError}
                             pId={id}
-                        /> */
-
+                        />
                     }
 
                 </div>

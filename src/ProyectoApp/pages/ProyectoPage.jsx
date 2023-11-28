@@ -15,6 +15,7 @@ import { ModalEliminarMiembro } from '../components/ModalEliminarMiembro';
 import { useEtiquetaStore } from '../../hooks/useEtiquetaStore';
 import { prioridad, prioridadC } from '../types/types'
 import { useForm } from 'react-hook-form'
+import { Paginacion } from '../components/Paginacion'
 
 
 export const ProyectoPage = () => {
@@ -78,6 +79,10 @@ export const ProyectoPage = () => {
                 <h6 className='mb-3'>Creador: {Autor}</h6>
 
                 <hr />
+
+                <div>
+                    <p className='fs-5'>{Descripcion}</p>
+                </div>
 
                 <div className='' style={{ width: '45%' }}>
 
@@ -222,6 +227,7 @@ export const ProyectoPage = () => {
                 </Tabs>
 
             </Container>
+
         </div>
     )
 }

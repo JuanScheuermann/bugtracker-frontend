@@ -26,6 +26,9 @@ export const authSlice = createSlice({
                 state.user = {},
                 state.mensajeError = payload
         },
+        crearMensajeError: (state, { payload }) => {
+            state.mensajeError = payload
+        },
         borrarMensajeError: (state) => {
             state.mensajeError = undefined
         }
@@ -33,4 +36,4 @@ export const authSlice = createSlice({
 });
 
 
-export const { onChecking, onLoging, onLogout, borrarMensajeError } = authSlice.actions;
+export const { onChecking, onLoging, crearMensajeError, onLogout, borrarMensajeError } = authSlice.actions;

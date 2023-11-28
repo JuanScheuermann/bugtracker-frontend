@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 
 export const AgregarMiembro = () => {
 
-    const { usuarios, obtenerNuevosMiembros } = useUsuarioService();
+    const { usuarios, obtenerNuevosMiembros, mensajeError } = useUsuarioService();
     const { miembros, agregarMiembro } = useMiembrosService();
     const { register, handleSubmit } = useForm();
     const [newmiembros, setMiembros] = useState([]);
@@ -16,7 +16,6 @@ export const AgregarMiembro = () => {
 
     useEffect(() => {
         obtenerNuevosMiembros(id);
-        console.log(id)
     }, [])
 
     const onChangeCheckbox = (event) => {
@@ -36,7 +35,6 @@ export const AgregarMiembro = () => {
     const search = (data) => {
 
         obtenerNuevosMiembros(id, data.search);
-
     }
 
     const submit = (e) => {
@@ -50,6 +48,14 @@ export const AgregarMiembro = () => {
         agregarMiembro(id, newmiembros);
         navigate(`/proyecto/${id}`)
     }
+
+    useEffect(() => {
+
+        if (mensajeError !== undefined) {
+            Swal.fire('Error', mensajeError, 'error');
+        }
+    }, [mensajeError])
+
 
     return (
         <div>
@@ -76,7 +82,7 @@ export const AgregarMiembro = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <Miembros onChangeCheckbox={onChangeCheckbox} usuarios={usuarios} />
+                                <Miembros onChangeCheckbox={onChangeCheckbox} usuarios={usuarios} miembros={miembros} />
                             </tbody>
                         </table>
                     </div>

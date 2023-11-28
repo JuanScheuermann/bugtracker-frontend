@@ -51,7 +51,7 @@ export const ModalEditarComentario = ({ cid, cuerpo, eid }) => {
                             {errors.cuerpoForm && <span className='text-danger'>El cuerpo es obligatorio</span>}
                         </Form.Group>
 
-                        <button variant="primary" className='btn btn-primary' type='submit'>
+                        <button variant="primary" className='btn btn-primary mt-3' type='submit'>
                             Guardar
                         </button>
 

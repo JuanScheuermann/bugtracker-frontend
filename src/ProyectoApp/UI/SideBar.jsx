@@ -67,26 +67,26 @@ export const SideBar = () => {
                             <Collapse in={openDropHome}>
                                 <ul className='nav-collapse ms-1' id='submenu' data-bs-parent="#parentM">
                                     <li className='nav-item text-white'>
-                                        <Link to='/' className='nav-link' aria-current="page">
+                                        <Link to='/' className='nav-link' aria-current="page" onClick={cerrarMenu}>
                                             Mis Proyectos
                                         </Link>
                                     </li>
 
                                     <li className='nav-item text-white'>
-                                        <Link to='/proyectos/participacion' className='nav-link' aria-current="page">
+                                        <Link to='/proyectos/participacion' className='nav-link' onClick={cerrarMenu} aria-current="page">
                                             Soy Miembro
                                         </Link>
                                     </li>
 
                                     <li className='nav-item text-white'>
-                                        <Link to='/proyecto/nuevo' className='nav-link' aria-current="page">Nuevo proyecto</Link>
+                                        <Link to='/proyecto/nuevo' className='nav-link' onClick={cerrarMenu} aria-current="page">Nuevo proyecto</Link>
                                     </li>
                                 </ul>
                             </Collapse>
                         </li>
 
                         <li className='nav-item my-1'>
-                            <Link to='/perfil' className='nav-link'>
+                            <Link to='/perfil' className='nav-link' onClick={cerrarMenu}>
                                 <i className="bi bi-person-fill text-dark fs-4"></i>
                                 <span className='ms-3 text-dark fs-5'>Mi perfil</span>
                             </Link>
@@ -95,8 +95,8 @@ export const SideBar = () => {
                         {
                             user.rol == 'Admin' &&
                             <li className='nav-item my-1'>
-                                <Link to='/admin/usuarios' className='nav-link'>
-                                    <i className="bi bi-person-fill text-dark fs-4"></i>
+                                <Link to='/admin/usuarios' className='nav-link' onClick={cerrarMenu}>
+                                    <i className="bi bi-people-fill text-dark fs-4"></i>
                                     <span className='ms-3 text-dark fs-5'>Usuarios</span>
                                 </Link>
                             </li>

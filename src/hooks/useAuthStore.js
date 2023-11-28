@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { onLoging, onLogout, onChecking, borrarMensajeError } from '../store/Auth/authSlice';
+import { onLoging, onLogout, onChecking, borrarMensajeError, crearMensajeError } from '../store/Auth/authSlice';
 import { proyectoApi } from '../Api/configuracion'
 import { Navigate, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -26,7 +26,6 @@ export const useAuthStore = () => {
             dispatch(onLoging({ uid: data.uid, nombre: data.nombre, rol: data.rol }))
 
         } catch (err) {
-            console.log(err.response.data?.message)
             dispatch(onLogout(err.response.data?.message));
             setTimeout(() => {
                 dispatch(borrarMensajeError())

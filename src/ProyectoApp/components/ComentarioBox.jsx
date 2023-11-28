@@ -33,8 +33,12 @@ export const ComentarioBox = ({
                     <div key={c.id} className='comentario-container d-flex justify-content-start align-items-center border shadow mb-2'>
 
                         <div>
+
                             <span>{c.miembroStr}</span>
+                            <span style={{ fontWeight: 'lighter', marginLeft: '12px' }}>{c.fecha}</span>
+
                             <p className='mt-1'>{c.cuerpo}</p>
+
                             {
                                 c.miembroId == Miembro.id &&
                                 <div className='d-flex align-items-center'>

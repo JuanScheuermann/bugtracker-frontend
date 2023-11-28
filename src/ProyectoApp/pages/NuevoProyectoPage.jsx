@@ -43,6 +43,12 @@ export const NuevoProyectoPage = () => {
         navigate('/proyectos', { replace: true });
     }
 
+    const search = () => {
+        const data = document.getElementById('search-input').value;
+        console.log(data)
+        obtenerUsuarios(data)
+    }
+
     useEffect(() => {
         obtenerUsuarios();
     }, [])
@@ -89,8 +95,13 @@ export const NuevoProyectoPage = () => {
                             </Tab>
                             <Tab eventKey='miembros' title='Miembros'>
                                 <div className="input-group mb-3">
-                                    <input type="text" className="form-control" placeholder="Correo del usuario" />
-                                    <button className="input-group-text shadow-none px-4 btn-warning">
+                                    <input type="text" className="form-control"
+                                        name='search'
+                                        placeholder="Correo del usuario"
+                                        id='search-input'
+                                    />
+                                    <button className="input-group-text shadow-none px-4 btn-warning"
+                                        onClick={search}>
                                         <i className="bi bi-search"></i>
                                     </button>
                                 </div>
@@ -105,7 +116,7 @@ export const NuevoProyectoPage = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <Miembros onChangeCheckbox={onChangeCheckbox} usuarios={usuarios} />
+                                                <Miembros onChangeCheckbox={onChangeCheckbox} usuarios={usuarios} miembros={miembros} />
                                             </tbody>
                                         </table>
                                     </div>
