@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { proyectoApi } from '../Api/configuracion'
 import { useSelector } from 'react-redux';
-import { set } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 export const useUsuarioService = () => {
     //const { user, mensajeError } = useSelector(state => state.Auth);
@@ -10,6 +10,7 @@ export const useUsuarioService = () => {
     const [miembros, setMiembros] = useState([]);
     const [usuarioActual, setUsuarioActual] = useState({});
     const [mensajeError, setMensajeError] = useState(undefined);
+    const navigate = useNavigate()
 
 
     const obtenerUsuarios = async (cadenaBuscar = "") => {
@@ -23,6 +24,31 @@ export const useUsuarioService = () => {
             setTimeout(() => {
                 setMensajeError("")
             }, 10)
+        }
+    }
+
+    const obtenerUsuariosAdmin = async (cadenaBuscar = "") => {
+        try {
+            let user = JSON.parse(localStorage.getItem('user'))
+
+            const { data } = await proyectoApi.get(`usuario/admin/usuarios?cadenaBuscar=${cadenaBuscar}`);
+            setUsuarios([...data].filter(u => u.id != user.uid))
+        } catch (error) {
+            if (error.response.status == 403) {
+
+                /* setMensajeError("Usuario no autorizado")
+                setTimeout(() => {
+                    setMensajeError("")
+                }, 10) */
+                navigate('/')
+            }
+            else {
+                console.log(error)
+                setMensajeError(error.response.data)
+                setTimeout(() => {
+                    setMensajeError("")
+                }, 10)
+            }
         }
     }
 
@@ -138,6 +164,7 @@ export const useUsuarioService = () => {
         mensajeError,
         modUsuario,
         agregarPermisoUsuario,
+        obtenerUsuariosAdmin,
         bloquearUsuario
     }
 }

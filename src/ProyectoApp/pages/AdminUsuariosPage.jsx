@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 export const AdminUsuariosPage = () => {
 
   const {
-    obtenerUsuarios,
+    obtenerUsuariosAdmin,
     usuarios,
     bloquearUsuario,
     agregarPermisoUsuario,
@@ -16,7 +16,7 @@ export const AdminUsuariosPage = () => {
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    obtenerUsuarios();
+    obtenerUsuariosAdmin();
   }, [])
 
   const bloquear = (uid) => {
@@ -27,7 +27,7 @@ export const AdminUsuariosPage = () => {
   const searchUsuarios = (data, e) => {
 
     e.preventDefault();
-    obtenerUsuarios(data.search)
+    obtenerUsuariosAdmin(data.search)
 
   }
 
