@@ -20,7 +20,8 @@ export const ProyectosPage = () => {
 
     const searchSubmit = (data, e) => {
         e.preventDefault();
-        obtenerMisProyectos(data.search);
+        console.log(data)
+        obtenerMisProyectos(data.search, data.estadoD);
     }
 
 
@@ -46,6 +47,19 @@ export const ProyectosPage = () => {
             <div className=''>
                 <form action="" onSubmit={handleSubmit(searchSubmit)}>
                     <div className="input-group mb-3">
+                        <div className="input-group-text p-0">
+                            <select
+                                className='form-select form-select-lg shadow-none bg-light border-0'
+                                name="estadoD" id=""
+                                {...register("estadoD")}
+                            >
+                                <option value="-1">Estado</option>
+                                <option value="0">Desarrollo</option>
+                                <option value="1">Finalizado</option>
+                                <option value="2">Abandonado</option>
+
+                            </select>
+                        </div>
                         <input type="text" name='search'
                             className="form-control"
                             placeholder="Titulo de la etiqueta"

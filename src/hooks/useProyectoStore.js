@@ -62,17 +62,20 @@ export const useProyectoStore = () => {
 
         } catch (error) {
 
-            dispatch(CrearMensajeError("Ocurruio un error inesperado, intente mas tarde"));
+            console.log(error)
+            dispatch(CrearMensajeError(error.response.data.message));
             setTimeout(() => {
                 dispatch(LimpiarMensajeError());
             }, 10);
         }
     }
 
-    const obtenerMisProyectos = async (cadenabuscar = "") => {
+    const obtenerMisProyectos = async (cadenabuscar = "", estadoD = "4") => {
 
         try {
-            const { data } = await proyectoApi.get(`proyecto/${user.uid}/all?cadenaBuscar=${cadenabuscar}`);
+
+            const { data } = await proyectoApi
+                .get(`proyecto/${user.uid}/all?cadenaBuscar=${cadenabuscar}&estadoD=${Number(estadoD)}`);
             //setProyectos(data);
             dispatch(setMisProyectos(data));
 
@@ -85,11 +88,13 @@ export const useProyectoStore = () => {
         }
     }
 
-    const obtenerProyectosParticipacion = async () => {
+    const obtenerProyectosParticipacion = async (cadenaBuscar = "", estadoD = "4") => {
 
         try {
 
-            const { data } = await proyectoApi.get(`proyecto/${user.uid}/participando`);
+            const { data } = await proyectoApi
+                .get(`proyecto/${user.uid}/participando?cadenaBuscar=${cadenaBuscar}&estadoD=${Number(estadoD)}`);
+
             dispatch(setMisProyectos(data));
         } catch (error) {
             dispatch(CrearMensajeError("Ocurruio un error inesperado, intente mas tarde"));

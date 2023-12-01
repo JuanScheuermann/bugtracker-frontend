@@ -11,6 +11,7 @@ export const useUsuarioService = () => {
     const [usuarioActual, setUsuarioActual] = useState({});
     const [mensajeError, setMensajeError] = useState(undefined);
 
+
     const obtenerUsuarios = async (cadenaBuscar = "") => {
         try {
             let user = JSON.parse(localStorage.getItem('user'))
@@ -89,7 +90,7 @@ export const useUsuarioService = () => {
 
         } catch (error) {
 
-            setMensajeError("Ocurrio un error inesperado");
+            setMensajeError(error.response.data.message);
             setTimeout(() => {
                 setMensajeError(undefined)
             }, 10);

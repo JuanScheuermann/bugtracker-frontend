@@ -84,7 +84,7 @@ export const useAuthStore = () => {
             Swal.fire('Verificado', "Se le a enviado un correo para continuar", 'success');
         } catch (err) {
 
-            dispatch(onLogout("Usuario no encontrado"));
+            dispatch(onLogout(err.response.data.message));
             setTimeout(() => {
                 dispatch(borrarMensajeError())
             }, 10);

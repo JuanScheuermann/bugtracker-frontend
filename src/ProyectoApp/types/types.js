@@ -1,6 +1,6 @@
 export const estadoD = {
     0: "En desarrollo",
-    1: "Completado",
+    1: "Finalizado",
     2: "Abandonado"
 }
 

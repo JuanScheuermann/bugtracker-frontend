@@ -15,7 +15,7 @@ import { ModalEliminarMiembro } from '../components/ModalEliminarMiembro';
 import { useEtiquetaStore } from '../../hooks/useEtiquetaStore';
 import { prioridad, prioridadC } from '../types/types'
 import { useForm } from 'react-hook-form'
-import { Paginacion } from '../components/Paginacion'
+import Swal from 'sweetalert2'
 
 
 export const ProyectoPage = () => {
@@ -51,7 +51,7 @@ export const ProyectoPage = () => {
 
     const search = (data, e) => {
         e.preventDefault();
-        obtenerEtiquetas(id, data.search)
+        obtenerEtiquetas(id, data.search, data.prioridadS)
     }
 
     useEffect(() => {
@@ -66,6 +66,11 @@ export const ProyectoPage = () => {
         fetchEtiquetas();
     }, [])
 
+    useEffect(() => {
+        if (MensajeError !== undefined) {
+            Swal.fire('Error', MensajeError, 'error');
+        }
+    })
 
 
 
@@ -126,12 +131,25 @@ export const ProyectoPage = () => {
                             </div>
                             <form action="" onSubmit={handleSubmit(search)}>
                                 <div className="input-group mb-3">
+                                    <div className="input-group-text p-0">
+                                        <select
+                                            className='form-select form-select-lg shadow-none bg-light border-0'
+                                            name="prioridadS" id=""
+                                            {...register("prioridadS")}
+                                        >
+                                            <option value="4">Prioridad</option>
+                                            <option value="1">Baja</option>
+                                            <option value="2">Media</option>
+                                            <option value="3">Alta</option>
 
+                                        </select>
+                                    </div>
                                     <input
                                         type="text"
                                         className="form-control"
                                         placeholder="Titulo de la etiqueta"
                                         name='search'
+                                        autoComplete='off'
                                         {...register("search")}
                                     />
                                     <button className="input-group-text shadow-none px-4 btn-warning" type='submit'>
@@ -145,7 +163,7 @@ export const ProyectoPage = () => {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Descripcion</th>
+                                        <th>Titulo</th>
                                         <th>Prioridad</th>
                                         <th>Autor</th>
                                         <th></th>

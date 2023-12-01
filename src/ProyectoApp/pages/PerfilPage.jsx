@@ -15,16 +15,16 @@ export const PerfilPage = () => {
     });
 
     const guardarCambio = (data, e) => {
-        e.preventDefault();
 
+        e.preventDefault();
         modUsuario({
             uid: user.uid,
             email: data.email,
             nombre: data.nombre,
             apellido: data.apellido
         });
-        console.log(usuarioActual)
         setEnable(true)
+
     }
 
     useEffect(() => {
@@ -35,7 +35,9 @@ export const PerfilPage = () => {
 
         if (mensajeError !== undefined) {
             Swal.fire('Error', mensajeError, 'error');
+            setEnable(false)
         }
+
     }, [mensajeError])
 
 

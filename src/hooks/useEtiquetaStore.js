@@ -23,11 +23,10 @@ export const useEtiquetaStore = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    const obtenerEtiquetas = async (pid, cadenaBuscar = "") => {
+    const obtenerEtiquetas = async (pid, cadenaBuscar = "", prioridad = "4") => {
 
         try {
-
-            const { data } = await proyectoApi.get(`etiqueta/${pid}/all?cadenaBuscar=${cadenaBuscar}`)
+            const { data } = await proyectoApi.get(`Etiqueta/${pid}/all?cadenaBuscar=${cadenaBuscar}&prioridad=${Number(prioridad)}`);
             dispatch(setEtiquetas(data));
         } catch (error) {
 
